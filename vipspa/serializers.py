@@ -88,6 +88,7 @@ class ServiceSectionSerializer(serializers.ModelSerializer):
     class Meta:
         model = ServiceSection
         fields = [
+            'id',
             "subtitle",
             "title",
             "description",
@@ -165,17 +166,10 @@ class PricingPlanSerializer(serializers.ModelSerializer):
 
 
 class TestimonialSerializer(serializers.ModelSerializer):
+    photo = serializers.ImageField(required=False, allow_null=True)
     class Meta:
         model = Testimonial
-        fields = [
-            "id",
-            "name",
-            "designation",
-            "comment",
-            "photo",
-            "rating",
-            "order",
-        ]
+        fields = '__all__'
 
 
 class TeamMemberSerializer(serializers.ModelSerializer):
@@ -230,4 +224,36 @@ class BlogPostSerializer(serializers.ModelSerializer):
             "image",
             "details_link",
             "order",
+        ]
+        
+# Sevice Section এর জন্য Serializer
+from rest_framework import serializers
+from .models import ServiceItem, ServiceCategory
+
+# ১. ক্যাটাগরি সিরিয়ালাইজার
+class ServiceCategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ServiceCategory
+        fields = ['id', 'name', 'order']
+
+# ২. সার্ভিস আইটেম সিরিয়ালাইজার (সার্ভিস পেজের জন্য)
+class ServiceItemSerializer(serializers.ModelSerializer):
+    category_name = serializers.ReadOnlyField(source='category.name')
+
+    class Meta:
+        model = ServiceItem
+        fields = [
+            'id', 
+            'category', 
+            'category_name', 
+            'service_type', 
+            'title', 
+            'description', 
+            'icon_image', 
+            'main_image', 
+            'price', 
+            'duration', 
+            'show_on_homepage', 
+            'is_active', 
+            'order'
         ]

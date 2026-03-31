@@ -1,5 +1,7 @@
 from django.contrib import admin
 from .models import (
+    ServiceCategory,
+    ServiceItem,
     SiteConfig,
     HeroSlide,
     BrandLogo,
@@ -113,3 +115,15 @@ class BlogSectionAdmin(admin.ModelAdmin):
 class BlogPostAdmin(admin.ModelAdmin):
     list_display = ("title", "category", "order", "is_active")
     list_editable = ("order", "is_active")
+    
+
+@admin.register(ServiceCategory)
+class ServiceCategoryAdmin(admin.ModelAdmin):
+    list_display = ('name', 'order')
+    list_editable = ('order',)
+
+@admin.register(ServiceItem) # এখানে ServiceItem হবে
+class ServiceItemAdmin(admin.ModelAdmin):
+    list_display = ('title', 'category', 'service_type', 'show_on_homepage', 'is_active', 'order')
+    list_editable = ('service_type', 'show_on_homepage', 'is_active', 'order')
+    list_filter = ('service_type', 'category', 'show_on_homepage', 'is_active')
