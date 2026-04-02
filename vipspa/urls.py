@@ -24,6 +24,6 @@ router.register(r'blog-posts', BlogPostViewSet)
 
 urlpatterns = [
     path('homepage/', homepage_view, name='homepage'),
-    path('service/', views.services_page_view, name='services-page'),
+    # path('services/', views.services_page_view, name='services-page'),
     path('', include(router.urls)),
 ]

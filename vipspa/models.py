@@ -1,23 +1,5 @@
 from django.db import models
 
-
-class SiteConfig(models.Model):
-    site_name = models.CharField(max_length=200, blank=True)
-    logo = models.ImageField(upload_to="site/", blank=True, null=True)
-    phone_number = models.CharField(max_length=30, blank=True)
-    address = models.TextField(blank=True)
-    email = models.EmailField(blank=True)
-
-    updated_at = models.DateTimeField(auto_now=True)
-
-    class Meta:
-        verbose_name = "Site Config"
-        verbose_name_plural = "Site Config"
-
-    def __str__(self):
-        return self.site_name or "Site Config"
-
-
 class HeroSlide(models.Model):
     stroke_text = models.CharField(max_length=200, blank=True)
     subtitle = models.CharField(max_length=255, blank=True)
@@ -267,7 +249,7 @@ class BlogPost(models.Model):
 
     def __str__(self):
         return self.title
-    
+
 # service page এর জন্য নতুন মডেল
 from django.db import models
 
@@ -538,7 +520,7 @@ class BlogPost(models.Model):
 
     def __str__(self):
         return self.title
-    
+
 # service page এর জন্য নতুন মডেল
 from django.db import models
 
@@ -568,7 +550,7 @@ class ServiceItem(models.Model): # নাম Service থেকে ServiceItem �
     main_image = models.ImageField(upload_to='services/main/', null=True, blank=True)
     price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     duration = models.CharField(max_length=50, blank=True)
-    
+
     show_on_homepage = models.BooleanField(default=False) # এই ফিল্ডটি এখানে যোগ করা হলো
     is_active = models.BooleanField(default=True)
     order = models.IntegerField(default=0)
@@ -578,3 +560,30 @@ class ServiceItem(models.Model): # নাম Service থেকে ServiceItem �
 
     def __str__(self): 
         return self.title
+
+
+class SiteConfig(models.Model):
+    # General Info
+    site_name = models.CharField(max_length=100, default="VIP SPA")
+    footer_logo = models.ImageField(upload_to="site/logos/", null=True, blank=True)
+    footer_description = models.TextField(null=True, blank=True)
+
+    # Contact Info
+    phone_number = models.CharField(max_length=20, null=True, blank=True)
+    email = models.EmailField(null=True, blank=True)
+    address = models.TextField(null=True, blank=True)
+
+    # Opening Hours
+    mon_fri_time = models.CharField(max_length=100, null=True, blank=True)
+    sat_time = models.CharField(max_length=100, null=True, blank=True)
+    sun_time = models.CharField(max_length=100, null=True, blank=True)
+
+    # Social Media Links
+    facebook_url = models.URLField(max_length=500, null=True, blank=True)
+    twitter_url = models.URLField(max_length=500, null=True, blank=True)
+    instagram_url = models.URLField(max_length=500, null=True, blank=True)
+
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.site_name

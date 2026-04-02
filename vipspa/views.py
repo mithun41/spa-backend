@@ -163,14 +163,36 @@ def homepage_view(request):
     return Response(data)
 
 # Service page view
-@api_view(['GET'])
-def services_page_view(request):
-    all_services = ServiceItem.objects.filter(is_active=True).order_by('order')
-    
-    general_services = all_services.filter(service_type='general')
-    top_services = all_services.filter(service_type='top')
-    
-    return Response({
-        "general_services": ServiceItemSerializer(general_services, many=True, context={'request': request}).data,
-        "top_services": ServiceItemSerializer(top_services, many=True, context={'request': request}).data
-    })
+from rest_framework import viewsets, permissions, status
+from rest_framework.response import Response
+from .models import ServiceItem
+from .serializers import ServiceItemSerializer
+
+class ServiceViewSet(viewsets.ModelViewSet):
+    # 'order_back' এর বদলে 'order_by' হবে মামা
+    queryset = ServiceItem.objects.all().order_by('-id') 
+    serializer_class = ServiceItemSerializer
+
+    def get_serializer_context(self):
+        # ইমেজ পাথ ঠিক রাখার জন্য রিকোয়েস্ট পাঠানো জরুরি
+        return {'request': self.request}
+
+    # বাকি মেথডগুলো ডিফল্টভাবেই কাজ করবে, আলাদা করে না লিখলেও চলে
+
+
+from rest_framework import viewsets, permissions, status
+from rest_framework.response import Response
+from .models import SiteConfig
+from .serializers import SiteConfigSerializer
+
+
+class SiteConfigViewSet(viewsets.ModelViewSet):
+    queryset = SiteConfig.objects.all()
+    serializer_class = SiteConfigSerializer
+
+    def get_permissions(self):
+        # GET রিকোয়েস্ট (ফুটার দেখার জন্য) সবাই পারবে
+        # POST/PATCH/DELETE রিকোয়েস্টের জন্য লগইন লাগবে
+        if self.action in ["list", "retrieve"]:
+            return [permissions.AllowAny()]
+        return [permissions.IsAuthenticated()]

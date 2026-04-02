@@ -20,11 +20,20 @@ from .models import (
     BlogSection,
     BlogPost,
 )
+from vipspa import models
+
+
+from django.contrib import admin
+from .models import SiteConfig
 
 
 @admin.register(SiteConfig)
 class SiteConfigAdmin(admin.ModelAdmin):
+    # list_display মানে এডমিন লিস্টে কোন কোন কলাম দেখা যাবে
     list_display = ("site_name", "phone_number", "email", "updated_at")
+
+    # চাইলে এখানে এডিট করার সুবিধাও দিতে পারেন
+    list_editable = ("phone_number", "email")
 
 
 @admin.register(HeroSlide)
@@ -115,7 +124,7 @@ class BlogSectionAdmin(admin.ModelAdmin):
 class BlogPostAdmin(admin.ModelAdmin):
     list_display = ("title", "category", "order", "is_active")
     list_editable = ("order", "is_active")
-    
+
 
 @admin.register(ServiceCategory)
 class ServiceCategoryAdmin(admin.ModelAdmin):
