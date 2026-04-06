@@ -21,6 +21,10 @@ router.register(r'instagram-sections', InstagramSectionViewSet)
 router.register(r'instagram-images', InstagramImageViewSet)
 router.register(r'blog-sections', BlogSectionViewSet)
 router.register(r'blog-posts', BlogPostViewSet)
+router.register(r"blog-pages", BlogPageViewSet)
+router.register(r"categories", CategoryViewSet)  
+router.register(r"comments", BlogCommentViewSet)
+router.register(r"gallery", GalleryViewSet, basename="gallery")
 
 urlpatterns = [
     path('homepage/', homepage_view, name='homepage'),

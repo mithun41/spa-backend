@@ -2,15 +2,35 @@ from rest_framework import viewsets, permissions, status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 
+from redlightspa.models import Gallery
+from redlightspa.serializers import GallerySerializer
+
 from .models import (
-    ServiceItem, SiteConfig, HeroSlide, BrandLogo, AboutSection, ServiceSection, 
-    Service, MarqueeItem, VideoSection, GalleryItem, PricingSection, 
-    PricingPlan, Testimonial, TeamMember, InstagramSection, 
-    InstagramImage, BlogSection, BlogPost
+    BlogComment,
+    BlogPage,
+    Category,
+    ServiceItem,
+    SiteConfig,
+    HeroSlide,
+    BrandLogo,
+    AboutSection,
+    ServiceSection,
+    Service,
+    MarqueeItem,
+    VideoSection,
+    GalleryItem,
+    PricingSection,
+    PricingPlan,
+    Testimonial,
+    TeamMember,
+    InstagramSection,
+    InstagramImage,
+    BlogSection,
+    BlogPost,
 )
 
 from .serializers import (
-    ServiceItemSerializer, SiteConfigSerializer, HeroSlideSerializer, BrandLogoSerializer, 
+    BlogPageSerializer, CategorySerializer, BlogCommentSerializer, ServiceItemSerializer, SiteConfigSerializer, HeroSlideSerializer, BrandLogoSerializer, 
     AboutSectionSerializer, ServiceSectionSerializer, ServiceSerializer, 
     MarqueeItemSerializer, VideoSectionSerializer, GalleryItemSerializer, 
     PricingSectionSerializer, PricingPlanSerializer, TestimonialSerializer, 
@@ -196,3 +216,47 @@ class SiteConfigViewSet(viewsets.ModelViewSet):
         if self.action in ["list", "retrieve"]:
             return [permissions.AllowAny()]
         return [permissions.IsAuthenticated()]
+
+
+class BlogPageViewSet(viewsets.ModelViewSet):
+    queryset = BlogPage.objects.all().order_by("-created_at")
+    serializer_class = BlogPageSerializer
+    lookup_field = "slug"  # Fetch by slug for SEO-friendly URLs
+
+    def get_permissions(self):
+        # Public can see the blogs, but only Admin can Create/Update/Delete
+        if self.action in ["list", "retrieve"]:
+            return [permissions.AllowAny()]
+        return [permissions.IsAuthenticated()]
+
+
+class CategoryViewSet(viewsets.ModelViewSet):
+    queryset = Category.objects.all().order_by("name")
+    serializer_class = CategorySerializer
+
+    def get_permissions(self):
+        # যে কেউ ক্যাটাগরি দেখতে পারবে (list/retrieve)
+        # কিন্তু Create/Update/Delete করতে হলে লগইন করা লাগবে
+        if self.action in ["list", "retrieve"]:
+            return [permissions.AllowAny()]
+        return [permissions.IsAuthenticated()]
+
+
+class BlogCommentViewSet(viewsets.ModelViewSet):
+    queryset = BlogComment.objects.all()
+    serializer_class = BlogCommentSerializer
+
+    def get_permissions(self):
+        if self.action == "create":  # যে কেউ কমেন্ট করতে পারবে
+            return [permissions.AllowAny()]
+        return [permissions.IsAuthenticated()]  # শুধু এডমিন ডিলিট/এডিট করতে পারবে
+
+
+class GalleryViewSet(viewsets.ModelViewSet):
+    serializer_class = GallerySerializer
+
+    def get_queryset(self):
+        return Gallery.objects.filter(site="vipspa").order_by("-uploaded_at")
+
+    def perform_create(self, serializer):
+        serializer.save(site="vipspa")  # সেভ করার সময় অটো vipspa ট্যাগ পড়বে

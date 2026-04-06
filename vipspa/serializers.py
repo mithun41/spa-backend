@@ -1,5 +1,9 @@
 from rest_framework import serializers
 from .models import (
+    BlogComment,
+    BlogPage,
+    Category,
+    Gallery,
     SiteConfig,
     HeroSlide,
     BrandLogo,
@@ -17,6 +21,7 @@ from .models import (
     InstagramImage,
     BlogSection,
     BlogPost,
+    
 )
 
 
@@ -88,7 +93,7 @@ class ServiceSectionSerializer(serializers.ModelSerializer):
     class Meta:
         model = ServiceSection
         fields = [
-            'id',
+            "id",
             "subtitle",
             "title",
             "description",
@@ -167,9 +172,10 @@ class PricingPlanSerializer(serializers.ModelSerializer):
 
 class TestimonialSerializer(serializers.ModelSerializer):
     photo = serializers.ImageField(required=False, allow_null=True)
+
     class Meta:
         model = Testimonial
-        fields = '__all__'
+        fields = "__all__"
 
 
 class TeamMemberSerializer(serializers.ModelSerializer):
@@ -226,36 +232,39 @@ class BlogPostSerializer(serializers.ModelSerializer):
             "order",
         ]
 
+
 # Sevice Section এর জন্য Serializer
 from rest_framework import serializers
 from .models import ServiceItem, ServiceCategory
+
 
 # ১. ক্যাটাগরি সিরিয়ালাইজার
 class ServiceCategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = ServiceCategory
-        fields = ['id', 'name', 'order']
+        fields = ["id", "name", "order"]
+
 
 # ২. সার্ভিস আইটেম সিরিয়ালাইজার (সার্ভিস পেজের জন্য)
 class ServiceItemSerializer(serializers.ModelSerializer):
-    category_name = serializers.ReadOnlyField(source='category.name')
+    category_name = serializers.ReadOnlyField(source="category.name")
 
     class Meta:
         model = ServiceItem
         fields = [
-            'id', 
-            'category', 
-            'category_name', 
-            'service_type', 
-            'title', 
-            'description', 
-            'icon_image', 
-            'main_image', 
-            'price', 
-            'duration', 
-            'show_on_homepage', 
-            'is_active', 
-            'order'
+            "id",
+            "category",
+            "category_name",
+            "service_type",
+            "title",
+            "description",
+            "icon_image",
+            "main_image",
+            "price",
+            "duration",
+            "show_on_homepage",
+            "is_active",
+            "order",
         ]
 
 
@@ -268,4 +277,42 @@ from .models import SiteConfig
 class SiteConfigSerializer(serializers.ModelSerializer):
     class Meta:
         model = SiteConfig
+        fields = "__all__"
+
+
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = "__all__"
+        extra_kwargs = {
+            "slug": {"required": False}  # যদি স্লাগ থাকে তবে এটা রিকোয়ার্ড অফ করে দিন
+        }
+
+
+class BlogCommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BlogComment  # এখানে আগে ভুল ছিল
+        fields = "__all__"
+
+
+class BlogPageSerializer(serializers.ModelSerializer):
+    category_name = serializers.ReadOnlyField(source="category.name")
+    comments = BlogCommentSerializer(many=True, read_only=True)
+    day = serializers.SerializerMethodField()
+    month = serializers.SerializerMethodField()
+
+    class Meta:
+        model = BlogPage
+        fields = "__all__"
+
+    def get_day(self, obj):
+        return obj.created_at.strftime("%d")
+
+    def get_month(self, obj):
+        return obj.created_at.strftime("%b")
+
+
+class GallerySerializer(serializers.ModelSerializer):
+    class Meta:  # এখানে Dictionary লেখা ছিল, এটাকে Meta করে দিন
+        model = Gallery
         fields = "__all__"

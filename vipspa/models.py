@@ -1,5 +1,7 @@
 from django.db import models
 
+from django.utils.text import slugify
+
 class HeroSlide(models.Model):
     stroke_text = models.CharField(max_length=200, blank=True)
     subtitle = models.CharField(max_length=255, blank=True)
@@ -587,3 +589,58 @@ class SiteConfig(models.Model):
 
     def __str__(self):
         return self.site_name
+
+
+class Category(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+    slug = models.SlugField(unique=True, blank=True)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.name
+
+
+class BlogPage(models.Model):
+    title = models.CharField(max_length=255)
+    slug = models.SlugField(unique=True, blank=True)
+    category = models.ForeignKey(
+        Category, on_delete=models.SET_NULL, null=True, related_name="blogs"
+    )
+    image = models.ImageField(upload_to="blog/")
+    content = models.TextField()
+    author = models.CharField(max_length=100, default="Admin")
+    tags = models.CharField(max_length=255, blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title)
+        super().save(*args, **kwargs)
+
+
+class BlogComment(models.Model):
+    blog = models.ForeignKey(
+        BlogPage, on_delete=models.CASCADE, related_name="comments"
+    )
+    name = models.CharField(max_length=100)
+    email = models.EmailField()
+    message = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Comment by {self.name} on {self.blog.title}"
+
+
+class Gallery(models.Model):
+    # এই ফিল্ডটা মাস্ট দুই জায়গাতেই লাগবে
+    site = models.CharField(max_length=20, default="vipspa")
+    image = models.ImageField(upload_to="gallery/")
+    title = models.CharField(max_length=255, blank=True, null=True)
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.site} - {self.id}"

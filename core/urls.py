@@ -11,6 +11,7 @@ from rest_framework_simplejwt.views import (
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/vipspa/', include('vipspa.urls')),
+    path('api/redlightspa/', include('redlightspa.urls')),
     
     # লগইন করার জন্য এই রুটগুলো যোগ করুন
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
