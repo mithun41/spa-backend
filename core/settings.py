@@ -40,7 +40,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'core.urls'
 CORS_ALLOW_ALL_ORIGINS = True
-ALLOWED_HOSTS = ["vipspa.pythonanywhere.com"]
+ALLOWED_HOSTS = ["vipspa.pythonanywhere.com", "127.0.0.1", "localhost"]
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 TEMPLATES = [

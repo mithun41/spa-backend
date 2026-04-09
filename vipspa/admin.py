@@ -30,6 +30,7 @@ from vipspa import models
 
 from django.contrib import admin
 from .models import SiteConfig
+from .models import HomeSection
 
 
 @admin.register(SiteConfig)
@@ -185,3 +186,6 @@ class GalleryAdmin(admin.ModelAdmin):
         return "No Image"
 
     thumbnail.short_description = "Preview"
+
+
+admin.site.register(HomeSection)

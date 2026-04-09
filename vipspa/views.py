@@ -9,6 +9,7 @@ from .models import (
     BlogComment,
     BlogPage,
     Category,
+    HomeSection,
     ServiceItem,
     SiteConfig,
     HeroSlide,
@@ -30,7 +31,7 @@ from .models import (
 )
 
 from .serializers import (
-    BlogPageSerializer, CategorySerializer, BlogCommentSerializer, ServiceItemSerializer, SiteConfigSerializer, HeroSlideSerializer, BrandLogoSerializer, 
+    BlogPageSerializer, CategorySerializer, BlogCommentSerializer, HomeSectionSerializer, ServiceItemSerializer, SiteConfigSerializer, HeroSlideSerializer, BrandLogoSerializer, 
     AboutSectionSerializer, ServiceSectionSerializer, ServiceSerializer, 
     MarqueeItemSerializer, VideoSectionSerializer, GalleryItemSerializer, 
     PricingSectionSerializer, PricingPlanSerializer, TestimonialSerializer, 
@@ -149,55 +150,109 @@ def homepage_view(request):
     team_members = TeamMember.objects.filter(is_active=True).order_by("order")
     instagram_images = InstagramImage.objects.filter(is_active=True).order_by("order")
     blog_posts = BlogPost.objects.filter(is_active=True).order_by("order")
+    home_sections = HomeSection.objects.all()
 
     data = {
-        "site_config": SiteConfigSerializer(site_config, context={"request": request}).data if site_config else {},
-        "hero": {"slides": HeroSlideSerializer(hero_slides, many=True, context={"request": request}).data},
-        "brands": {"items": BrandLogoSerializer(brand_logos, many=True, context={"request": request}).data},
-        "about": AboutSectionSerializer(about_section, context={"request": request}).data if about_section else {},
-        "services": {
-            "section_info": ServiceSectionSerializer(service_section, context={"request": request}).data if service_section else {},
-            "items": ServiceSerializer(services, many=True, context={"request": request}).data,
+        "site_config": (
+            SiteConfigSerializer(site_config, context={"request": request}).data
+            if site_config
+            else {}
+        ),
+        "hero": {
+            "slides": HeroSlideSerializer(
+                hero_slides, many=True, context={"request": request}
+            ).data
         },
-        "marquee": {"items": MarqueeItemSerializer(marquee_items, many=True, context={"request": request}).data},
-        "video": VideoSectionSerializer(video_section, context={"request": request}).data if video_section else {},
-        "gallery": {"items": GalleryItemSerializer(gallery_items, many=True, context={"request": request}).data},
+        "brands": {
+            "items": BrandLogoSerializer(
+                brand_logos, many=True, context={"request": request}
+            ).data
+        },
+        "about": (
+            AboutSectionSerializer(about_section, context={"request": request}).data
+            if about_section
+            else {}
+        ),
+        "services": {
+            "section_info": (
+                ServiceSectionSerializer(
+                    service_section, context={"request": request}
+                ).data
+                if service_section
+                else {}
+            ),
+            "items": ServiceSerializer(
+                services, many=True, context={"request": request}
+            ).data,
+        },
+        "marquee": {
+            "items": MarqueeItemSerializer(
+                marquee_items, many=True, context={"request": request}
+            ).data
+        },
+        "video": (
+            VideoSectionSerializer(video_section, context={"request": request}).data
+            if video_section
+            else {}
+        ),
+        "gallery": {
+            "items": GalleryItemSerializer(
+                gallery_items, many=True, context={"request": request}
+            ).data
+        },
         "pricing": {
-            "section_info": PricingSectionSerializer(pricing_section, context={"request": request}).data if pricing_section else {},
-            "plans": PricingPlanSerializer(pricing_plans, many=True, context={"request": request}).data,
+            "section_info": (
+                PricingSectionSerializer(
+                    pricing_section, context={"request": request}
+                ).data
+                if pricing_section
+                else {}
+            ),
+            "plans": PricingPlanSerializer(
+                pricing_plans, many=True, context={"request": request}
+            ).data,
         },
         "testimonials": {
-            "items": TestimonialSerializer(testimonials, many=True, context={"request": request}).data
+            "items": TestimonialSerializer(
+                testimonials, many=True, context={"request": request}
+            ).data
         },
-        "team": {"items": TeamMemberSerializer(team_members, many=True, context={"request": request}).data},
+        "team": {
+            "items": TeamMemberSerializer(
+                team_members, many=True, context={"request": request}
+            ).data
+        },
         "instagram": {
-            "section_info": InstagramSectionSerializer(instagram_section, context={"request": request}).data if instagram_section else {},
-            "items": InstagramImageSerializer(instagram_images, many=True, context={"request": request}).data,
+            "section_info": (
+                InstagramSectionSerializer(
+                    instagram_section, context={"request": request}
+                ).data
+                if instagram_section
+                else {}
+            ),
+            "items": InstagramImageSerializer(
+                instagram_images, many=True, context={"request": request}
+            ).data,
         },
         "blog": {
-            "section_info": BlogSectionSerializer(blog_section, context={"request": request}).data if blog_section else {},
-            "posts": BlogPostSerializer(blog_posts, many=True, context={"request": request}).data,
+            "section_info": (
+                BlogSectionSerializer(blog_section, context={"request": request}).data
+                if blog_section
+                else {}
+            ),
+            "posts": BlogPostSerializer(
+                blog_posts, many=True, context={"request": request}
+            ).data,
+        },
+        "home_sections": {
+            "items": HomeSectionSerializer(
+                home_sections, many=True, context={"request": request}
+            ).data
         },
     }
 
     return Response(data)
 
-# Service page view
-from rest_framework import viewsets, permissions, status
-from rest_framework.response import Response
-from .models import ServiceItem
-from .serializers import ServiceItemSerializer
-
-class ServiceViewSet(viewsets.ModelViewSet):
-    # 'order_back' এর বদলে 'order_by' হবে মামা
-    queryset = ServiceItem.objects.all().order_by('-id') 
-    serializer_class = ServiceItemSerializer
-
-    def get_serializer_context(self):
-        # ইমেজ পাথ ঠিক রাখার জন্য রিকোয়েস্ট পাঠানো জরুরি
-        return {'request': self.request}
-
-    # বাকি মেথডগুলো ডিফল্টভাবেই কাজ করবে, আলাদা করে না লিখলেও চলে
 
 
 from rest_framework import viewsets, permissions, status
@@ -260,3 +315,8 @@ class GalleryViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(site="vipspa")  # সেভ করার সময় অটো vipspa ট্যাগ পড়বে
+
+
+class HomeSectionViewSet(viewsets.ModelViewSet):
+    queryset = HomeSection.objects.all()
+    serializer_class = HomeSectionSerializer

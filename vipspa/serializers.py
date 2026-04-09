@@ -102,16 +102,10 @@ class ServiceSectionSerializer(serializers.ModelSerializer):
 
 
 class ServiceSerializer(serializers.ModelSerializer):
+
     class Meta:
-        model = Service
-        fields = [
-            "id",
-            "title",
-            "icon",
-            "background_image",
-            "details_link",
-            "order",
-        ]
+        model = Service 
+        fields = "__all__"
 
 
 class MarqueeItemSerializer(serializers.ModelSerializer):
@@ -315,4 +309,12 @@ class BlogPageSerializer(serializers.ModelSerializer):
 class GallerySerializer(serializers.ModelSerializer):
     class Meta:  # এখানে Dictionary লেখা ছিল, এটাকে Meta করে দিন
         model = Gallery
+        fields = "__all__"
+
+from .models import HomeSection
+
+
+class HomeSectionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = HomeSection
         fields = "__all__"

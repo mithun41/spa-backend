@@ -25,6 +25,7 @@ router.register(r"blog-pages", BlogPageViewSet)
 router.register(r"categories", CategoryViewSet)  
 router.register(r"comments", BlogCommentViewSet)
 router.register(r"gallery", GalleryViewSet, basename="gallery")
+router.register(r"home-sections", HomeSectionViewSet)
 
 urlpatterns = [
     path('homepage/', homepage_view, name='homepage'),
