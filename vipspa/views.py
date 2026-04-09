@@ -254,7 +254,6 @@ def homepage_view(request):
     return Response(data)
 
 
-
 from rest_framework import viewsets, permissions, status
 from rest_framework.response import Response
 from .models import SiteConfig
@@ -320,3 +319,28 @@ class GalleryViewSet(viewsets.ModelViewSet):
 class HomeSectionViewSet(viewsets.ModelViewSet):
     queryset = HomeSection.objects.all()
     serializer_class = HomeSectionSerializer
+from rest_framework import viewsets, permissions
+from .models import ServiceItem
+from .serializers import ServiceItemSerializer
+
+
+class ServiceItemViewSet(viewsets.ModelViewSet):
+    queryset = ServiceItem.objects.all()
+    serializer_class = ServiceItemSerializer
+    permission_classes = [
+        permissions.AllowAny
+    ]  # প্রোডাকশনে IsAuthenticatedAdmin দিতে পারেন
+
+    def get_queryset(self):
+        queryset = ServiceItem.objects.all()
+        # যদি URL-এ ?homepage=true থাকে তবে শুধু হোমপেজের গুলো দেখাবে
+        homepage = self.request.query_params.get("homepage")
+        if homepage == "true":
+            queryset = queryset.filter(show_on_homepage=True)
+
+        # যদি শুধু একটি নির্দিষ্ট ক্যাটেগরি ফিল্টার করতে চান
+        category_id = self.request.query_params.get("category")
+        if category_id:
+            queryset = queryset.filter(category_id=category_id)
+
+        return queryset.filter(is_active=True)
