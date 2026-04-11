@@ -9,13 +9,13 @@ from rest_framework_simplejwt.views import (
 )
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('api/vipspa/', include('vipspa.urls')),
-    path('api/redlightspa/', include('redlightspa.urls')),
-    
+    path("admin/", admin.site.urls),
+    path("api/vipspa/", include("vipspa.urls")),
+    path("api/redlightspa/", include("redlightspa.urls")),
+    path("api/elitespa/", include("elitespa.urls")),
     # লগইন করার জন্য এই রুটগুলো যোগ করুন
-    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path("api/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
+    path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
 ]
 
 if settings.DEBUG:

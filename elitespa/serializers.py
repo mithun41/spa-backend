@@ -22,7 +22,6 @@ from .models import (
     InstagramImage,
     BlogSection,
     BlogPost,
-    
 )
 
 
@@ -105,7 +104,7 @@ class ServiceSectionSerializer(serializers.ModelSerializer):
 class ServiceSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = Service 
+        model = Service
         fields = "__all__"
 
 
@@ -311,6 +310,7 @@ class GallerySerializer(serializers.ModelSerializer):
     class Meta:  # এখানে Dictionary লেখা ছিল, এটাকে Meta করে দিন
         model = Gallery
         fields = "__all__"
+
 
 from .models import HomeSection
 

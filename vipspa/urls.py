@@ -27,6 +27,7 @@ router.register(r"comments", BlogCommentViewSet)
 router.register(r"gallery", GalleryViewSet, basename="gallery")
 router.register(r"home-sections", HomeSectionViewSet)
 router.register(r"service-items", ServiceItemViewSet, basename="serviceitem")
+router.register(r"pages", DynamicPageViewSet, basename="dynamic-page")
 
 urlpatterns = [
     path('homepage/', homepage_view, name='homepage'),
