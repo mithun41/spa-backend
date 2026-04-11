@@ -2,13 +2,16 @@ from django.db import models
 
 from django.utils.text import slugify
 
+
 class HeroSlide(models.Model):
     stroke_text = models.CharField(max_length=200, blank=True)
     subtitle = models.CharField(max_length=255, blank=True)
     title = models.CharField(max_length=255, blank=True)
     description = models.TextField(blank=True)
 
-    background_image = models.ImageField(upload_to="homepage/hero/", blank=True, null=True)
+    background_image = models.ImageField(
+        upload_to="homepage/hero/", blank=True, null=True
+    )
     main_image = models.ImageField(upload_to="homepage/hero/", blank=True, null=True)
     shape_image = models.ImageField(upload_to="homepage/hero/", blank=True, null=True)
 
@@ -47,13 +50,19 @@ class AboutSection(models.Model):
     side_image = models.ImageField(upload_to="homepage/about/", blank=True, null=True)
 
     feature_1 = models.CharField(max_length=100, blank=True)
-    feature_1_icon = models.ImageField(upload_to="homepage/about/features/", blank=True, null=True)
+    feature_1_icon = models.ImageField(
+        upload_to="homepage/about/features/", blank=True, null=True
+    )
 
     feature_2 = models.CharField(max_length=100, blank=True)
-    feature_2_icon = models.ImageField(upload_to="homepage/about/features/", blank=True, null=True)
+    feature_2_icon = models.ImageField(
+        upload_to="homepage/about/features/", blank=True, null=True
+    )
 
     feature_3 = models.CharField(max_length=100, blank=True)
-    feature_3_icon = models.ImageField(upload_to="homepage/about/features/", blank=True, null=True)
+    feature_3_icon = models.ImageField(
+        upload_to="homepage/about/features/", blank=True, null=True
+    )
 
     button_text = models.CharField(max_length=100, blank=True)
     button_link = models.CharField(max_length=255, blank=True)
@@ -77,7 +86,9 @@ class ServiceSection(models.Model):
     subtitle = models.CharField(max_length=200, blank=True)
     title = models.CharField(max_length=255, blank=True)
     description = models.TextField(blank=True)
-    icon_image = models.ImageField(upload_to="homepage/services/", blank=True, null=True)
+    icon_image = models.ImageField(
+        upload_to="homepage/services/", blank=True, null=True
+    )
 
     class Meta:
         verbose_name = "Service Section"
@@ -89,8 +100,12 @@ class ServiceSection(models.Model):
 
 class Service(models.Model):
     title = models.CharField(max_length=200)
-    icon = models.ImageField(upload_to="homepage/services/items/", blank=True, null=True)
-    background_image = models.ImageField(upload_to="homepage/services/items/", blank=True, null=True)
+    icon = models.ImageField(
+        upload_to="homepage/services/items/", blank=True, null=True
+    )
+    background_image = models.ImageField(
+        upload_to="homepage/services/items/", blank=True, null=True
+    )
     details_link = models.CharField(max_length=255, blank=True)
     order = models.PositiveIntegerField(default=0)
     is_active = models.BooleanField(default=True)
@@ -119,7 +134,9 @@ class VideoSection(models.Model):
     button_text = models.CharField(max_length=100, blank=True)
     button_link = models.CharField(max_length=255, blank=True)
     video_url = models.URLField(blank=True)
-    background_image = models.ImageField(upload_to="homepage/video/", blank=True, null=True)
+    background_image = models.ImageField(
+        upload_to="homepage/video/", blank=True, null=True
+    )
 
     class Meta:
         verbose_name = "Video Section"
@@ -252,6 +269,7 @@ class BlogPost(models.Model):
     def __str__(self):
         return self.title
 
+
 # service page এর জন্য নতুন মডেল
 from django.db import models
 
@@ -279,7 +297,9 @@ class HeroSlide(models.Model):
     title = models.CharField(max_length=255, blank=True)
     description = models.TextField(blank=True)
 
-    background_image = models.ImageField(upload_to="homepage/hero/", blank=True, null=True)
+    background_image = models.ImageField(
+        upload_to="homepage/hero/", blank=True, null=True
+    )
     main_image = models.ImageField(upload_to="homepage/hero/", blank=True, null=True)
     shape_image = models.ImageField(upload_to="homepage/hero/", blank=True, null=True)
 
@@ -318,13 +338,19 @@ class AboutSection(models.Model):
     side_image = models.ImageField(upload_to="homepage/about/", blank=True, null=True)
 
     feature_1 = models.CharField(max_length=100, blank=True)
-    feature_1_icon = models.ImageField(upload_to="homepage/about/features/", blank=True, null=True)
+    feature_1_icon = models.ImageField(
+        upload_to="homepage/about/features/", blank=True, null=True
+    )
 
     feature_2 = models.CharField(max_length=100, blank=True)
-    feature_2_icon = models.ImageField(upload_to="homepage/about/features/", blank=True, null=True)
+    feature_2_icon = models.ImageField(
+        upload_to="homepage/about/features/", blank=True, null=True
+    )
 
     feature_3 = models.CharField(max_length=100, blank=True)
-    feature_3_icon = models.ImageField(upload_to="homepage/about/features/", blank=True, null=True)
+    feature_3_icon = models.ImageField(
+        upload_to="homepage/about/features/", blank=True, null=True
+    )
 
     button_text = models.CharField(max_length=100, blank=True)
     button_link = models.CharField(max_length=255, blank=True)
@@ -348,7 +374,9 @@ class ServiceSection(models.Model):
     subtitle = models.CharField(max_length=200, blank=True)
     title = models.CharField(max_length=255, blank=True)
     description = models.TextField(blank=True)
-    icon_image = models.ImageField(upload_to="homepage/services/", blank=True, null=True)
+    icon_image = models.ImageField(
+        upload_to="homepage/services/", blank=True, null=True
+    )
 
     class Meta:
         verbose_name = "Service Section"
@@ -403,7 +431,9 @@ class VideoSection(models.Model):
     button_text = models.CharField(max_length=100, blank=True)
     button_link = models.CharField(max_length=255, blank=True)
     video_url = models.URLField(blank=True)
-    background_image = models.ImageField(upload_to="homepage/video/", blank=True, null=True)
+    background_image = models.ImageField(
+        upload_to="homepage/video/", blank=True, null=True
+    )
 
     class Meta:
         verbose_name = "Video Section"
@@ -536,10 +566,12 @@ class BlogPost(models.Model):
     def __str__(self):
         return self.title
 
+
 # service page এর জন্য নতুন মডেল
 from django.db import models
 
 # --- Service Page এর জন্য নতুন মডেল (নাম বদলে ServiceItem করা হয়েছে যেন ডুপ্লিকেট না হয়) ---
+
 
 class ServiceCategory(models.Model):
     name = models.CharField(max_length=100)
@@ -548,32 +580,39 @@ class ServiceCategory(models.Model):
     class Meta:
         verbose_name_plural = "Service Categories"
 
-    def __str__(self): 
+    def __str__(self):
         return self.name
 
-class ServiceItem(models.Model): # নাম Service থেকে ServiceItem করা হলো
+
+class ServiceItem(models.Model):  # নাম Service থেকে ServiceItem করা হলো
     SERVICE_TYPE_CHOICES = [
-        ('general', 'General Service (Section 1)'),
-        ('top', 'Top Service (Section 3)'),
+        ("general", "General Service (Section 1)"),
+        ("top", "Top Service (Section 3)"),
     ]
 
-    category = models.ForeignKey(ServiceCategory, on_delete=models.CASCADE, related_name='services')
-    service_type = models.CharField(max_length=10, choices=SERVICE_TYPE_CHOICES, default='general')
+    category = models.ForeignKey(
+        ServiceCategory, on_delete=models.CASCADE, related_name="services"
+    )
+    service_type = models.CharField(
+        max_length=10, choices=SERVICE_TYPE_CHOICES, default="general"
+    )
     title = models.CharField(max_length=200)
     description = models.TextField()
-    icon_image = models.FileField(upload_to='services/icons/', help_text="SVG preferred", null=True, blank=True)
-    main_image = models.ImageField(upload_to='services/main/', null=True, blank=True)
+    icon_image = models.FileField(
+        upload_to="services/icons/", help_text="SVG preferred", null=True, blank=True
+    )
+    main_image = models.ImageField(upload_to="services/main/", null=True, blank=True)
     price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     duration = models.CharField(max_length=50, blank=True)
 
-    show_on_homepage = models.BooleanField(default=False) # এই ফিল্ডটি এখানে যোগ করা হলো
+    show_on_homepage = models.BooleanField(default=False)  # এই ফিল্ডটি এখানে যোগ করা হলো
     is_active = models.BooleanField(default=True)
     order = models.IntegerField(default=0)
 
     class Meta:
         ordering = ["order"]
 
-    def __str__(self): 
+    def __str__(self):
         return self.title
 
 

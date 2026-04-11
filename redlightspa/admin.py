@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from vipspa.views import BlogPageViewSet
+from redlightspa.views import BlogPageViewSet
 from .models import (
     BlogPage,
     Category,
@@ -25,7 +25,7 @@ from .models import (
     BlogSection,
     BlogPost,
 )
-from vipspa import models
+from redlightspa import models
 
 
 from django.contrib import admin

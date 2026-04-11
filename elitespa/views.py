@@ -32,104 +32,140 @@ from .models import (
 )
 
 from .serializers import (
-    BlogPageSerializer, CategorySerializer, BlogCommentSerializer, DynamicPageSerializer, HomeSectionSerializer, ServiceItemSerializer, SiteConfigSerializer, HeroSlideSerializer, BrandLogoSerializer, 
-    AboutSectionSerializer, ServiceSectionSerializer, ServiceSerializer, 
-    MarqueeItemSerializer, VideoSectionSerializer, GalleryItemSerializer, 
-    PricingSectionSerializer, PricingPlanSerializer, TestimonialSerializer, 
-    TeamMemberSerializer, InstagramSectionSerializer, InstagramImageSerializer, 
-    BlogSectionSerializer, BlogPostSerializer
+    BlogPageSerializer,
+    CategorySerializer,
+    BlogCommentSerializer,
+    DynamicPageSerializer,
+    HomeSectionSerializer,
+    ServiceItemSerializer,
+    SiteConfigSerializer,
+    HeroSlideSerializer,
+    BrandLogoSerializer,
+    AboutSectionSerializer,
+    ServiceSectionSerializer,
+    ServiceSerializer,
+    MarqueeItemSerializer,
+    VideoSectionSerializer,
+    GalleryItemSerializer,
+    PricingSectionSerializer,
+    PricingPlanSerializer,
+    TestimonialSerializer,
+    TeamMemberSerializer,
+    InstagramSectionSerializer,
+    InstagramImageSerializer,
+    BlogSectionSerializer,
+    BlogPostSerializer,
 )
 
 # --- ১. সব মডেলের জন্য CRUD ViewSets (অ্যাডমিন প্যানেলের জন্য) ---
 
 # --- ১. সব মডেলের জন্য CRUD ViewSets ---
 
+
 class SiteConfigViewSet(viewsets.ModelViewSet):
     queryset = SiteConfig.objects.all()
     serializer_class = SiteConfigSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
+
 class HeroSlideViewSet(viewsets.ModelViewSet):
-    queryset = HeroSlide.objects.all().order_by('order')
+    queryset = HeroSlide.objects.all().order_by("order")
     serializer_class = HeroSlideSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
+
 class BrandLogoViewSet(viewsets.ModelViewSet):
-    queryset = BrandLogo.objects.all().order_by('order')
+    queryset = BrandLogo.objects.all().order_by("order")
     serializer_class = BrandLogoSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
 
 class AboutSectionViewSet(viewsets.ModelViewSet):
     queryset = AboutSection.objects.all()
     serializer_class = AboutSectionSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
-class ServiceSectionViewSet(viewsets.ModelViewSet): # এইটা আপনার মিসিং ছিল
+
+class ServiceSectionViewSet(viewsets.ModelViewSet):  # এইটা আপনার মিসিং ছিল
     queryset = ServiceSection.objects.all()
     serializer_class = ServiceSectionSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
+
 class ServiceViewSet(viewsets.ModelViewSet):
-    queryset = Service.objects.all().order_by('order')
+    queryset = Service.objects.all().order_by("order")
     serializer_class = ServiceSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
+
 class MarqueeItemViewSet(viewsets.ModelViewSet):
-    queryset = MarqueeItem.objects.all().order_by('order')
+    queryset = MarqueeItem.objects.all().order_by("order")
     serializer_class = MarqueeItemSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
 
 class VideoSectionViewSet(viewsets.ModelViewSet):
     queryset = VideoSection.objects.all()
     serializer_class = VideoSectionSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
+
 class GalleryItemViewSet(viewsets.ModelViewSet):
-    queryset = GalleryItem.objects.all().order_by('order')
+    queryset = GalleryItem.objects.all().order_by("order")
     serializer_class = GalleryItemSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
 
 class PricingSectionViewSet(viewsets.ModelViewSet):
     queryset = PricingSection.objects.all()
     serializer_class = PricingSectionSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
+
 class PricingPlanViewSet(viewsets.ModelViewSet):
-    queryset = PricingPlan.objects.all().order_by('order')
+    queryset = PricingPlan.objects.all().order_by("order")
     serializer_class = PricingPlanSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
+
 class TestimonialViewSet(viewsets.ModelViewSet):
-    queryset = Testimonial.objects.all().order_by('order')
+    queryset = Testimonial.objects.all().order_by("order")
     serializer_class = TestimonialSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
+
 class TeamMemberViewSet(viewsets.ModelViewSet):
-    queryset = TeamMember.objects.all().order_by('order')
+    queryset = TeamMember.objects.all().order_by("order")
     serializer_class = TeamMemberSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
 
 class InstagramSectionViewSet(viewsets.ModelViewSet):
     queryset = InstagramSection.objects.all()
     serializer_class = InstagramSectionSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
+
 class InstagramImageViewSet(viewsets.ModelViewSet):
-    queryset = InstagramImage.objects.all().order_by('order')
+    queryset = InstagramImage.objects.all().order_by("order")
     serializer_class = InstagramImageSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
 
 class BlogSectionViewSet(viewsets.ModelViewSet):
     queryset = BlogSection.objects.all()
     serializer_class = BlogSectionSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
+
 class BlogPostViewSet(viewsets.ModelViewSet):
-    queryset = BlogPost.objects.all().order_by('-id')
+    queryset = BlogPost.objects.all().order_by("-id")
     serializer_class = BlogPostSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
+
 # --- ২. আপনার মেইন GET API (ফ্রন্টএন্ড হোমপেজের জন্য) ---
+
 
 @api_view(["GET"])
 def homepage_view(request):
@@ -311,15 +347,17 @@ class GalleryViewSet(viewsets.ModelViewSet):
     serializer_class = GallerySerializer
 
     def get_queryset(self):
-        return Gallery.objects.filter(site="vipspa").order_by("-uploaded_at")
+        return Gallery.objects.filter(site="elitespa").order_by("-uploaded_at")
 
     def perform_create(self, serializer):
-        serializer.save(site="vipspa")  # সেভ করার সময় অটো vipspa ট্যাগ পড়বে
+        serializer.save(site="elitespa")  # সেভ করার সময় অটো vipspa ট্যাগ পড়বে
 
 
 class HomeSectionViewSet(viewsets.ModelViewSet):
     queryset = HomeSection.objects.all()
     serializer_class = HomeSectionSerializer
+
+
 from rest_framework import viewsets, permissions
 from .models import ServiceItem
 from .serializers import ServiceItemSerializer

@@ -134,17 +134,25 @@ class BlogPostAdmin(admin.ModelAdmin):
 
 @admin.register(ServiceCategory)
 class ServiceCategoryAdmin(admin.ModelAdmin):
-    list_display = ('name', 'order')
-    list_editable = ('order',)
+    list_display = ("name", "order")
+    list_editable = ("order",)
 
-@admin.register(ServiceItem) # এখানে ServiceItem হবে
+
+@admin.register(ServiceItem)  # এখানে ServiceItem হবে
 class ServiceItemAdmin(admin.ModelAdmin):
-    list_display = ('title', 'category', 'service_type', 'show_on_homepage', 'is_active', 'order')
-    list_editable = ('service_type', 'show_on_homepage', 'is_active', 'order')
-    list_filter = ('service_type', 'category', 'show_on_homepage', 'is_active')
+    list_display = (
+        "title",
+        "category",
+        "service_type",
+        "show_on_homepage",
+        "is_active",
+        "order",
+    )
+    list_editable = ("service_type", "show_on_homepage", "is_active", "order")
+    list_filter = ("service_type", "category", "show_on_homepage", "is_active")
 
 
-from .models import Category, BlogComment, BlogPage  
+from .models import Category, BlogComment, BlogPage
 
 
 @admin.register(Category)
