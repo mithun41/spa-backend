@@ -2,8 +2,8 @@ from rest_framework import viewsets, permissions, status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 
-from redlightspa.models import Gallery
-from redlightspa.serializers import GallerySerializer
+from elitespa.models import Gallery
+from elitespa.serializers import GallerySerializer
 
 from .models import (
     BlogComment,
@@ -350,7 +350,7 @@ class GalleryViewSet(viewsets.ModelViewSet):
         return Gallery.objects.filter(site="elitespa").order_by("-uploaded_at")
 
     def perform_create(self, serializer):
-        serializer.save(site="elitespa")  # সেভ করার সময় অটো vipspa ট্যাগ পড়বে
+        serializer.save(site="elitespa")  
 
 
 class HomeSectionViewSet(viewsets.ModelViewSet):
