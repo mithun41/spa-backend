@@ -30,6 +30,7 @@ from redlightspa import models
 
 from django.contrib import admin
 from .models import SiteConfig
+from .models import HomeSection
 
 
 @admin.register(SiteConfig)
@@ -193,3 +194,64 @@ class GalleryAdmin(admin.ModelAdmin):
         return "No Image"
 
     thumbnail.short_description = "Preview"
+
+
+admin.site.register(HomeSection)
+from .models import DynamicPage
+
+
+@admin.register(DynamicPage)
+class DynamicPageAdmin(admin.ModelAdmin):
+    # লিস্ট ভিউতে যা যা দেখাবে
+    list_display = ("title", "slug", "is_active", "order", "created_at")
+
+    # লিস্ট থেকেই সরাসরি এডিট করা যাবে
+    list_editable = ("is_active", "order")
+
+    # টাইটেল লিখলে স্লাগ অটো তৈরি হবে
+    prepopulated_fields = {"slug": ("title",)}
+
+    # সার্চ এবং ফিল্টার করার সুবিধা
+    search_fields = ("title", "content", "bottom_content")
+    list_filter = ("is_active", "created_at")
+
+    # ফর্মের ফিল্ডগুলোকে সুন্দরভাবে সেকশন করে সাজানো (Fieldsets)
+    fieldsets = (
+        (
+            "Basic Information",
+            {"fields": ("title", "subtitle", "slug", "is_active", "order")},
+        ),
+        (
+            "Main Content (Above Image)",
+            {
+                "fields": ("content",),
+            },
+        ),
+        (
+            "Media",
+            {
+                "fields": ("banner_image",),
+            },
+        ),
+        (
+            "Additional Content (Below Image)",
+            {
+                "fields": ("bottom_content",),
+            },
+        ),
+        (
+            "SEO Metadata (Google Search Optimization)",
+            {
+                "classes": ("collapse",),  # এটি ক্লিক করলে ওপেন হবে
+                "fields": ("meta_title", "meta_description"),
+            },
+        ),
+    )
+
+    # কন্টেন্ট ফিল্ডগুলো বড় করে দেখার জন্য (টেক্সট এরিয়া সাইজ)
+    def formfield_for_dbfield(self, db_field, **kwargs):
+        formfield = super().formfield_for_dbfield(db_field, **kwargs)
+        if db_field.name in ["content", "bottom_content", "meta_description"]:
+            formfield.widget.attrs["rows"] = 10
+            formfield.widget.attrs["cols"] = 80
+        return formfield

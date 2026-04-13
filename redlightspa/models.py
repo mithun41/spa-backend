@@ -387,19 +387,28 @@ class ServiceSection(models.Model):
 
 
 class Service(models.Model):
-    title = models.CharField(max_length=200)
-    icon = models.ImageField(
-        upload_to="homepage/services/items/", blank=True, null=True
+    title = models.CharField(max_length=255)
+    icon = models.ImageField(upload_to="homepage/services/items/")
+    background_image = models.ImageField(upload_to="homepage/services/items/")
+
+    # নতুন ডিটেইলস ফিল্ডসমূহ
+    short_description = models.TextField(
+        blank=True, help_text="সার্ভিস লিস্টে দেখানোর জন্য"
     )
-    background_image = models.ImageField(
-        upload_to="homepage/services/items/", blank=True, null=True
+    long_description = models.TextField(
+        blank=True, help_text="ডিটেইলস পেইজে দেখানোর জন্য"
     )
-    details_link = models.CharField(max_length=255, blank=True)
-    order = models.PositiveIntegerField(default=0)
+    service_overview = models.TextField(blank=True)
+
+    # FAQ এর জন্য যদি আলাদা টেবিল না করতে চান, তবে আপাতত টেক্সট হিসেবে রাখা যায়
+    faq_data = models.JSONField(
+        default=list, blank=True, help_text="[{'q': '...', 'a': '...'}] ফরম্যাটে"
+    )
     is_active = models.BooleanField(default=True)
+    order = models.IntegerField(default=0)
 
     class Meta:
-        ordering = ["order"]
+        ordering = ["order", "-id"]
 
     def __str__(self):
         return self.title
@@ -680,10 +689,61 @@ class BlogComment(models.Model):
 
 class Gallery(models.Model):
     # এই ফিল্ডটা মাস্ট দুই জায়গাতেই লাগবে
-    site = models.CharField(max_length=20, default="redlightspa")
+    site = models.CharField(max_length=20, default="redlightspa")  # অথবা "vipspa" হতে পারে, এটা আপনার প্রোজেক্টের কাঠামোর উপর নির্ভর করবে
     image = models.ImageField(upload_to="gallery/")
     title = models.CharField(max_length=255, blank=True, null=True)
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"{self.site} - {self.id}"
+
+
+class HomeSection(models.Model):
+    title = models.CharField(max_length=255)
+    subtitle = models.CharField(max_length=255, blank=True, default="")
+    description = models.TextField(blank=True, default="")
+    image = models.ImageField(upload_to="home_sections/", blank=True, null=True)
+
+    # বাড়তি কিছু ফিল্ড (ভবিষ্যতের জন্য)
+    button_text = models.CharField(max_length=50, blank=True, default="")
+    button_url = models.URLField(max_length=500, blank=True, default="")
+    extra_field = models.CharField(max_length=255, blank=True, default="")
+
+    def __str__(self):
+        return self.title
+
+
+class DynamicPage(models.Model):
+    title = models.CharField(max_length=200)
+    subtitle = models.CharField(max_length=500, blank=True, null=True)
+    slug = models.SlugField(unique=True, blank=True)
+
+    # Content Fields
+    banner_image = models.ImageField(upload_to="pages/banners/", blank=True, null=True)
+    content = models.TextField(
+        help_text="Write your page content here (HTML supported)"
+    )
+
+    # Extra Fields
+    is_active = models.BooleanField(default=True)
+    order = models.IntegerField(default=0)
+
+    # SEO Fields
+    meta_title = models.CharField(max_length=255, blank=True, null=True)
+    meta_description = models.TextField(blank=True, null=True)
+    bottom_content = models.TextField(
+        blank=True, null=True, help_text="Extra text to show after the image"
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["order", "-created_at"]
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title)
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.title

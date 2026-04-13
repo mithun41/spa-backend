@@ -2,11 +2,15 @@ from rest_framework import viewsets, permissions, status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 
+from redlightspa.models import Gallery
+from redlightspa.serializers import GallerySerializer
+
 from .models import (
     BlogComment,
     BlogPage,
     Category,
-    Gallery,
+    DynamicPage,
+    HomeSection,
     ServiceItem,
     SiteConfig,
     HeroSlide,
@@ -31,7 +35,8 @@ from .serializers import (
     BlogPageSerializer,
     CategorySerializer,
     BlogCommentSerializer,
-    GallerySerializer,
+    DynamicPageSerializer,
+    HomeSectionSerializer,
     ServiceItemSerializer,
     SiteConfigSerializer,
     HeroSlideSerializer,
@@ -182,6 +187,7 @@ def homepage_view(request):
     team_members = TeamMember.objects.filter(is_active=True).order_by("order")
     instagram_images = InstagramImage.objects.filter(is_active=True).order_by("order")
     blog_posts = BlogPost.objects.filter(is_active=True).order_by("order")
+    home_sections = HomeSection.objects.all()
 
     data = {
         "site_config": (
@@ -275,30 +281,14 @@ def homepage_view(request):
                 blog_posts, many=True, context={"request": request}
             ).data,
         },
+        "home_sections": {
+            "items": HomeSectionSerializer(
+                home_sections, many=True, context={"request": request}
+            ).data
+        },
     }
 
     return Response(data)
-
-
-# Service page view
-from rest_framework import viewsets, permissions, status
-from rest_framework.response import Response
-from .models import ServiceItem
-from .serializers import ServiceItemSerializer
-
-
-class ServiceItemViewSet(viewsets.ModelViewSet):
-    queryset = ServiceItem.objects.all().order_by("-id")
-    serializer_class = ServiceItemSerializer
-
-    def get_serializer_context(self):
-        return {"request": self.request}
-
-    def get_serializer_context(self):
-        # ইমেজ পাথ ঠিক রাখার জন্য রিকোয়েস্ট পাঠানো জরুরি
-        return {"request": self.request}
-
-    # বাকি মেথডগুলো ডিফল্টভাবেই কাজ করবে, আলাদা করে না লিখলেও চলে
 
 
 from rest_framework import viewsets, permissions, status
@@ -360,4 +350,42 @@ class GalleryViewSet(viewsets.ModelViewSet):
         return Gallery.objects.filter(site="redlightspa").order_by("-uploaded_at")
 
     def perform_create(self, serializer):
-        serializer.save(site="redlightspa")  # সেভ করার সময় অটো redlightspa ট্যাগ পড়বে
+        serializer.save(site="redlightspa")
+
+
+class HomeSectionViewSet(viewsets.ModelViewSet):
+    queryset = HomeSection.objects.all()
+    serializer_class = HomeSectionSerializer
+
+
+from rest_framework import viewsets, permissions
+from .models import ServiceItem
+from .serializers import ServiceItemSerializer
+
+
+class ServiceItemViewSet(viewsets.ModelViewSet):
+    queryset = ServiceItem.objects.all()
+    serializer_class = ServiceItemSerializer
+    permission_classes = [
+        permissions.AllowAny
+    ]  # প্রোডাকশনে IsAuthenticatedAdmin দিতে পারেন
+
+    def get_queryset(self):
+        queryset = ServiceItem.objects.all()
+        # যদি URL-এ ?homepage=true থাকে তবে শুধু হোমপেজের গুলো দেখাবে
+        homepage = self.request.query_params.get("homepage")
+        if homepage == "true":
+            queryset = queryset.filter(show_on_homepage=True)
+
+        # যদি শুধু একটি নির্দিষ্ট ক্যাটেগরি ফিল্টার করতে চান
+        category_id = self.request.query_params.get("category")
+        if category_id:
+            queryset = queryset.filter(category_id=category_id)
+
+        return queryset.filter(is_active=True)
+
+
+class DynamicPageViewSet(viewsets.ModelViewSet):
+    queryset = DynamicPage.objects.all()
+    serializer_class = DynamicPageSerializer
+    lookup_field = "slug"  # এইটা মাস্ট, যাতে আইডি'র বদলে স্লাগ দিয়ে এডিট করা যায়

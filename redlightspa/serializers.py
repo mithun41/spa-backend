@@ -1,8 +1,9 @@
-from rest_framework import serializers
+from rest_framework import serializers, viewsets
 from .models import (
     BlogComment,
     BlogPage,
     Category,
+    DynamicPage,
     Gallery,
     SiteConfig,
     HeroSlide,
@@ -101,15 +102,10 @@ class ServiceSectionSerializer(serializers.ModelSerializer):
 
 
 class ServiceSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Service
-        fields = [
-            "id",
-            "title",
-            "icon",
-            "background_image",
-            "details_link",
-        ]
+        fields = "__all__"
 
 
 class MarqueeItemSerializer(serializers.ModelSerializer):
@@ -266,7 +262,6 @@ class ServiceItemSerializer(serializers.ModelSerializer):
         ]
 
 
-# vipspa/serializers.py
 
 from rest_framework import serializers
 from .models import SiteConfig
@@ -313,4 +308,20 @@ class BlogPageSerializer(serializers.ModelSerializer):
 class GallerySerializer(serializers.ModelSerializer):
     class Meta:  # এখানে Dictionary লেখা ছিল, এটাকে Meta করে দিন
         model = Gallery
+        fields = "__all__"
+
+
+from .models import HomeSection
+
+
+class HomeSectionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = HomeSection
+        fields = "__all__"
+
+
+# Serializer
+class DynamicPageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DynamicPage
         fields = "__all__"

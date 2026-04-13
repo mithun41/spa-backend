@@ -10,7 +10,6 @@ router.register(r"brand-logos", BrandLogoViewSet)
 router.register(r"about-sections", AboutSectionViewSet)
 router.register(r"service-sections", ServiceSectionViewSet)  # এখন আর 404 হবে না
 router.register(r"services", ServiceViewSet)  # এখন আর 404 হবে nich
-router.register(r"service-items", ServiceItemViewSet)
 router.register(r"marquee-items", MarqueeItemViewSet)
 router.register(r"video-sections", VideoSectionViewSet)
 router.register(r"gallery-items", GalleryItemViewSet)
@@ -26,6 +25,9 @@ router.register(r"blog-pages", BlogPageViewSet)
 router.register(r"categories", CategoryViewSet)
 router.register(r"comments", BlogCommentViewSet)
 router.register(r"gallery", GalleryViewSet, basename="gallery")
+router.register(r"home-sections", HomeSectionViewSet)
+router.register(r"service-items", ServiceItemViewSet, basename="serviceitem")
+router.register(r"pages", DynamicPageViewSet, basename="dynamic-page")
 
 urlpatterns = [
     path("homepage/", homepage_view, name="homepage"),
