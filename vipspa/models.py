@@ -1,6 +1,10 @@
 from django.db import models
 
+
 from django.utils.text import slugify
+
+
+
 
 class HeroSlide(models.Model):
     stroke_text = models.CharField(max_length=200, blank=True)

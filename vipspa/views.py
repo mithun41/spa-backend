@@ -1,7 +1,7 @@
 from rest_framework import viewsets, permissions, status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
-
+from .permissions import IsVipSpaAdmin
 from redlightspa.models import Gallery
 from redlightspa.serializers import GallerySerializer
 
@@ -32,104 +32,140 @@ from .models import (
 )
 
 from .serializers import (
-    BlogPageSerializer, CategorySerializer, BlogCommentSerializer, DynamicPageSerializer, HomeSectionSerializer, ServiceItemSerializer, SiteConfigSerializer, HeroSlideSerializer, BrandLogoSerializer, 
-    AboutSectionSerializer, ServiceSectionSerializer, ServiceSerializer, 
-    MarqueeItemSerializer, VideoSectionSerializer, GalleryItemSerializer, 
-    PricingSectionSerializer, PricingPlanSerializer, TestimonialSerializer, 
-    TeamMemberSerializer, InstagramSectionSerializer, InstagramImageSerializer, 
-    BlogSectionSerializer, BlogPostSerializer
+    BlogPageSerializer,
+    CategorySerializer,
+    BlogCommentSerializer,
+    DynamicPageSerializer,
+    HomeSectionSerializer,
+    ServiceItemSerializer,
+    SiteConfigSerializer,
+    HeroSlideSerializer,
+    BrandLogoSerializer,
+    AboutSectionSerializer,
+    ServiceSectionSerializer,
+    ServiceSerializer,
+    MarqueeItemSerializer,
+    VideoSectionSerializer,
+    GalleryItemSerializer,
+    PricingSectionSerializer,
+    PricingPlanSerializer,
+    TestimonialSerializer,
+    TeamMemberSerializer,
+    InstagramSectionSerializer,
+    InstagramImageSerializer,
+    BlogSectionSerializer,
+    BlogPostSerializer,
 )
 
 # --- ১. সব মডেলের জন্য CRUD ViewSets (অ্যাডমিন প্যানেলের জন্য) ---
 
 # --- ১. সব মডেলের জন্য CRUD ViewSets ---
 
+
 class SiteConfigViewSet(viewsets.ModelViewSet):
     queryset = SiteConfig.objects.all()
     serializer_class = SiteConfigSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [IsVipSpaAdmin]
+
 
 class HeroSlideViewSet(viewsets.ModelViewSet):
-    queryset = HeroSlide.objects.all().order_by('order')
+    queryset = HeroSlide.objects.all().order_by("order")
     serializer_class = HeroSlideSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [IsVipSpaAdmin]
+
 
 class BrandLogoViewSet(viewsets.ModelViewSet):
-    queryset = BrandLogo.objects.all().order_by('order')
+    queryset = BrandLogo.objects.all().order_by("order")
     serializer_class = BrandLogoSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [IsVipSpaAdmin]
+
 
 class AboutSectionViewSet(viewsets.ModelViewSet):
     queryset = AboutSection.objects.all()
     serializer_class = AboutSectionSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [IsVipSpaAdmin]
 
-class ServiceSectionViewSet(viewsets.ModelViewSet): # এইটা আপনার মিসিং ছিল
+
+class ServiceSectionViewSet(viewsets.ModelViewSet):  # এইটা আপনার মিসিং ছিল
     queryset = ServiceSection.objects.all()
     serializer_class = ServiceSectionSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [IsVipSpaAdmin]
+
 
 class ServiceViewSet(viewsets.ModelViewSet):
-    queryset = Service.objects.all().order_by('order')
+    queryset = Service.objects.all().order_by("order")
     serializer_class = ServiceSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [IsVipSpaAdmin]
+
 
 class MarqueeItemViewSet(viewsets.ModelViewSet):
-    queryset = MarqueeItem.objects.all().order_by('order')
+    queryset = MarqueeItem.objects.all().order_by("order")
     serializer_class = MarqueeItemSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [IsVipSpaAdmin]
+
 
 class VideoSectionViewSet(viewsets.ModelViewSet):
     queryset = VideoSection.objects.all()
     serializer_class = VideoSectionSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [IsVipSpaAdmin]
+
 
 class GalleryItemViewSet(viewsets.ModelViewSet):
-    queryset = GalleryItem.objects.all().order_by('order')
+    queryset = GalleryItem.objects.all().order_by("order")
     serializer_class = GalleryItemSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [IsVipSpaAdmin]
+
 
 class PricingSectionViewSet(viewsets.ModelViewSet):
     queryset = PricingSection.objects.all()
     serializer_class = PricingSectionSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [IsVipSpaAdmin]
+
 
 class PricingPlanViewSet(viewsets.ModelViewSet):
-    queryset = PricingPlan.objects.all().order_by('order')
+    queryset = PricingPlan.objects.all().order_by("order")
     serializer_class = PricingPlanSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [IsVipSpaAdmin]
+
 
 class TestimonialViewSet(viewsets.ModelViewSet):
-    queryset = Testimonial.objects.all().order_by('order')
+    queryset = Testimonial.objects.all().order_by("order")
     serializer_class = TestimonialSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [IsVipSpaAdmin]
+
 
 class TeamMemberViewSet(viewsets.ModelViewSet):
-    queryset = TeamMember.objects.all().order_by('order')
+    queryset = TeamMember.objects.all().order_by("order")
     serializer_class = TeamMemberSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [IsVipSpaAdmin]
+
 
 class InstagramSectionViewSet(viewsets.ModelViewSet):
     queryset = InstagramSection.objects.all()
     serializer_class = InstagramSectionSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [IsVipSpaAdmin]
+
 
 class InstagramImageViewSet(viewsets.ModelViewSet):
-    queryset = InstagramImage.objects.all().order_by('order')
+    queryset = InstagramImage.objects.all().order_by("order")
     serializer_class = InstagramImageSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [IsVipSpaAdmin]
+
 
 class BlogSectionViewSet(viewsets.ModelViewSet):
     queryset = BlogSection.objects.all()
     serializer_class = BlogSectionSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [IsVipSpaAdmin]
+
 
 class BlogPostViewSet(viewsets.ModelViewSet):
-    queryset = BlogPost.objects.all().order_by('-id')
+    queryset = BlogPost.objects.all().order_by("-id")
     serializer_class = BlogPostSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [IsVipSpaAdmin]
+
 
 # --- ২. আপনার মেইন GET API (ফ্রন্টএন্ড হোমপেজের জন্য) ---
+
 
 @api_view(["GET"])
 def homepage_view(request):
@@ -264,6 +300,7 @@ from .serializers import SiteConfigSerializer
 class SiteConfigViewSet(viewsets.ModelViewSet):
     queryset = SiteConfig.objects.all()
     serializer_class = SiteConfigSerializer
+    permission_classes = [IsVipSpaAdmin]
 
     def get_permissions(self):
         # GET রিকোয়েস্ট (ফুটার দেখার জন্য) সবাই পারবে
@@ -276,6 +313,7 @@ class SiteConfigViewSet(viewsets.ModelViewSet):
 class BlogPageViewSet(viewsets.ModelViewSet):
     queryset = BlogPage.objects.all().order_by("-created_at")
     serializer_class = BlogPageSerializer
+    permission_classes = [IsVipSpaAdmin]
     lookup_field = "slug"  # Fetch by slug for SEO-friendly URLs
 
     def get_permissions(self):
@@ -288,6 +326,7 @@ class BlogPageViewSet(viewsets.ModelViewSet):
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all().order_by("name")
     serializer_class = CategorySerializer
+    permission_classes = [IsVipSpaAdmin]
 
     def get_permissions(self):
         # যে কেউ ক্যাটাগরি দেখতে পারবে (list/retrieve)
@@ -300,6 +339,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
 class BlogCommentViewSet(viewsets.ModelViewSet):
     queryset = BlogComment.objects.all()
     serializer_class = BlogCommentSerializer
+    permission_classes = [IsVipSpaAdmin]
 
     def get_permissions(self):
         if self.action == "create":  # যে কেউ কমেন্ট করতে পারবে
@@ -309,6 +349,7 @@ class BlogCommentViewSet(viewsets.ModelViewSet):
 
 class GalleryViewSet(viewsets.ModelViewSet):
     serializer_class = GallerySerializer
+    permission_classes = [IsVipSpaAdmin]
 
     def get_queryset(self):
         return Gallery.objects.filter(site="vipspa").order_by("-uploaded_at")
@@ -320,6 +361,9 @@ class GalleryViewSet(viewsets.ModelViewSet):
 class HomeSectionViewSet(viewsets.ModelViewSet):
     queryset = HomeSection.objects.all()
     serializer_class = HomeSectionSerializer
+    permission_classes = [IsVipSpaAdmin]
+
+
 from rest_framework import viewsets, permissions
 from .models import ServiceItem
 from .serializers import ServiceItemSerializer
@@ -328,9 +372,7 @@ from .serializers import ServiceItemSerializer
 class ServiceItemViewSet(viewsets.ModelViewSet):
     queryset = ServiceItem.objects.all()
     serializer_class = ServiceItemSerializer
-    permission_classes = [
-        permissions.AllowAny
-    ]  # প্রোডাকশনে IsAuthenticatedAdmin দিতে পারেন
+    permission_classes = [IsVipSpaAdmin]
 
     def get_queryset(self):
         queryset = ServiceItem.objects.all()
@@ -350,4 +392,5 @@ class ServiceItemViewSet(viewsets.ModelViewSet):
 class DynamicPageViewSet(viewsets.ModelViewSet):
     queryset = DynamicPage.objects.all()
     serializer_class = DynamicPageSerializer
+    permission_classes = [IsVipSpaAdmin]
     lookup_field = "slug"  # এইটা মাস্ট, যাতে আইডি'র বদলে স্লাগ দিয়ে এডিট করা যায়
