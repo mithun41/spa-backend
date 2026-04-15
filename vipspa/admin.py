@@ -32,27 +32,30 @@ from .models import SiteConfig
 from .models import HomeSection
 
 
+
+
 class VipSpaBaseAdmin(admin.ModelAdmin):
-    # এই অ্যাপের মডিউল দেখার পারমিশন
+    # গ্রুপের নাম এখানে ভেরিয়েবল হিসেবে রাখলাম যাতে পরে সহজে চেঞ্জ করা যায়
+    target_group_name = "VipSpaAdmin"
+
     def has_module_permission(self, request):
         if request.user.is_superuser:
             return True
-        return request.user.groups.filter(name="VipSpa").exists()
+        # চেক করছে ইউজার 'VipSpaAdmin' গ্রুপের মেম্বার কি না
+        return request.user.groups.filter(name=self.target_group_name).exists()
 
-    # ডাটা দেখা, যোগ করা বা এডিট করার পারমিশন
     def has_permission(self, request, obj=None):
         if request.user.is_superuser:
             return True
-        return request.user.groups.filter(name="VipSpa").exists()
+        return request.user.groups.filter(name=self.target_group_name).exists()
 
-    # কুয়েরিসেট ফিল্টার (যাতে অন্য কেউ ডাটা দেখতেই না পারে)
     def get_queryset(self, request):
         qs = super().get_queryset(request)
         if request.user.is_superuser:
             return qs
-        if request.user.groups.filter(name="VipSpa").exists():
+        if request.user.groups.filter(name=self.target_group_name).exists():
             return qs
-        return qs.none()  # গ্রুপ না থাকলে খালি লিস্ট দেখাবে
+        return qs.none()  # গ্রুপ না মিললে কোনো ডাটা দেখাবে না
 
 
 @admin.register(SiteConfig)
