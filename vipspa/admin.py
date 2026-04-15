@@ -33,15 +33,26 @@ from .models import HomeSection
 
 
 class VipSpaBaseAdmin(admin.ModelAdmin):
+    # এই অ্যাপের মডিউল দেখার পারমিশন
     def has_module_permission(self, request):
         if request.user.is_superuser:
             return True
         return request.user.groups.filter(name="VipSpa").exists()
 
+    # ডাটা দেখা, যোগ করা বা এডিট করার পারমিশন
     def has_permission(self, request, obj=None):
         if request.user.is_superuser:
             return True
         return request.user.groups.filter(name="VipSpa").exists()
+
+    # কুয়েরিসেট ফিল্টার (যাতে অন্য কেউ ডাটা দেখতেই না পারে)
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        if request.user.groups.filter(name="VipSpa").exists():
+            return qs
+        return qs.none()  # গ্রুপ না থাকলে খালি লিস্ট দেখাবে
 
 
 @admin.register(SiteConfig)
