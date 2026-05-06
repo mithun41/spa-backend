@@ -325,12 +325,12 @@ class SiteConfig(models.Model):
         blank=True,
         help_text="Social share preview image",
     )
-    site_url = models.URLField(default="https://redlightspagulshan.com", blank=True)
+    site_url = models.URLField(default="https://vipspadhaka.com", blank=True)
 
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.site_nam
+        return self.site_name
 
 
 class HeroSlide(models.Model):
