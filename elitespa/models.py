@@ -648,33 +648,6 @@ class ServiceItem(models.Model):  # নাম Service থেকে ServiceItem �
         return self.title
 
 
-class SiteConfig(models.Model):
-    # General Info
-    site_name = models.CharField(max_length=100, default="VIP SPA")
-    footer_logo = models.ImageField(upload_to="site/logos/", null=True, blank=True)
-    footer_description = models.TextField(null=True, blank=True)
-
-    # Contact Info
-    phone_number = models.CharField(max_length=20, null=True, blank=True)
-    email = models.EmailField(null=True, blank=True)
-    address = models.TextField(null=True, blank=True)
-
-    # Opening Hours
-    mon_fri_time = models.CharField(max_length=100, null=True, blank=True)
-    sat_time = models.CharField(max_length=100, null=True, blank=True)
-    sun_time = models.CharField(max_length=100, null=True, blank=True)
-
-    # Social Media Links
-    facebook_url = models.URLField(max_length=500, null=True, blank=True)
-    twitter_url = models.URLField(max_length=500, null=True, blank=True)
-    instagram_url = models.URLField(max_length=500, null=True, blank=True)
-
-    updated_at = models.DateTimeField(auto_now=True)
-
-    def __str__(self):
-        return self.site_name
-
-
 class Category(models.Model):
     name = models.CharField(max_length=100, unique=True)
     slug = models.SlugField(unique=True, blank=True)

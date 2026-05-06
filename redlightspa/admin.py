@@ -33,8 +33,32 @@ from .models import SiteConfig
 from .models import HomeSection
 
 
+class ReglightspaBaseAdmin(admin.ModelAdmin):
+    # গ্রুপের নাম এখানে ভেরিয়েবল হিসেবে রাখলাম যাতে পরে সহজে চেঞ্জ করা যায়
+    target_group_name = "ReglightspaBaseAdmin"
+
+    def has_module_permission(self, request):
+        if request.user.is_superuser:
+            return True
+        # চেক করছে ইউজার 'VipSpaAdmin' গ্রুপের মেম্বার কি না
+        return request.user.groups.filter(name=self.target_group_name).exists()
+
+    def has_permission(self, request, obj=None):
+        if request.user.is_superuser:
+            return True
+        return request.user.groups.filter(name=self.target_group_name).exists()
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        if request.user.groups.filter(name=self.target_group_name).exists():
+            return qs
+        return qs.none()  # গ্রুপ না মিললে কোনো ডাটা দেখাবে না
+
+
 @admin.register(SiteConfig)
-class SiteConfigAdmin(VipSpaBaseAdmin):  # আপনার আগের বানানো বেস ক্লাস
+class SiteConfigAdmin(ReglightspaBaseAdmin):  # আপনার আগের বানানো বেস ক্লাস
     list_display = ("site_name", "phone_number", "whatsapp_number", "updated_at")
 
     fieldsets = (
