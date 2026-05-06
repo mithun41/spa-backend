@@ -57,18 +57,6 @@ from .serializers import (
     BlogPostSerializer,
 )
 
-# --- ১. সব মডেলের জন্য CRUD ViewSets (অ্যাডমিন প্যানেলের জন্য) ---
-
-# --- ১. সব মডেলের জন্য CRUD ViewSets ---
-
-
-class SiteConfigViewSet(viewsets.ModelViewSet):
-    queryset = SiteConfig.objects.all()
-    serializer_class = SiteConfigSerializer
-    permission_classes = [
-        permissions.AllowAny
-    ]
-
 
 class HeroSlideViewSet(viewsets.ModelViewSet):
     queryset = HeroSlide.objects.all().order_by("order")
@@ -325,22 +313,13 @@ def homepage_view(request):
     return Response(data)
 
 
-from rest_framework import viewsets, permissions, status
-from rest_framework.response import Response
-from .models import SiteConfig
-from .serializers import SiteConfigSerializer
-
-
 class SiteConfigViewSet(viewsets.ModelViewSet):
     queryset = SiteConfig.objects.all()
     serializer_class = SiteConfigSerializer
-    permission_classes = [
-        permissions.AllowAny
-    ]
 
     def get_permissions(self):
-        # GET রিকোয়েস্ট (ফুটার দেখার জন্য) সবাই পারবে
-        # POST/PATCH/DELETE রিকোয়েস্টের জন্য লগইন লাগবে
+        # GET রিকোয়েস্ট (লিঙ্ক/SEO দেখার জন্য) সবাই পারবে
+        # POST/PATCH/DELETE রিকোয়েস্টের জন্য লগইন লাগবে
         if self.action in ["list", "retrieve"]:
             return [permissions.AllowAny()]
         return [permissions.IsAuthenticated()]
@@ -408,11 +387,6 @@ class HomeSectionViewSet(viewsets.ModelViewSet):
     permission_classes = [
         permissions.AllowAny
     ]
-
-
-from rest_framework import viewsets, permissions
-from .models import ServiceItem
-from .serializers import ServiceItemSerializer
 
 
 class ServiceItemViewSet(viewsets.ModelViewSet):

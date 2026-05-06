@@ -291,11 +291,6 @@ def homepage_view(request):
     return Response(data)
 
 
-from rest_framework import viewsets, permissions, status
-from rest_framework.response import Response
-from .models import SiteConfig
-from .serializers import SiteConfigSerializer
-
 
 class SiteConfigViewSet(viewsets.ModelViewSet):
     queryset = SiteConfig.objects.all()

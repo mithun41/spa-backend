@@ -270,25 +270,63 @@ class BlogPost(models.Model):
         return self.title
 
 
-# service page এর জন্য নতুন মডেল
-from django.db import models
-
-
 class SiteConfig(models.Model):
-    site_name = models.CharField(max_length=200, blank=True)
-    logo = models.ImageField(upload_to="site/", blank=True, null=True)
-    phone_number = models.CharField(max_length=30, blank=True)
-    address = models.TextField(blank=True)
-    email = models.EmailField(blank=True)
+    # General Info
+    site_name = models.CharField(max_length=100, default="VIP SPA")
+    footer_logo = models.ImageField(upload_to="site/logos/", null=True, blank=True)
+    footer_description = models.TextField(null=True, blank=True)
+
+    # Contact Info
+    phone_number = models.CharField(
+        max_length=20, null=True, blank=True
+    )  # মেইন কন্টাক্ট
+    call_number = models.CharField(
+        max_length=20, null=True, blank=True, help_text="Direct call number for buttons"
+    )
+    email = models.EmailField(null=True, blank=True)
+    address = models.TextField(null=True, blank=True)
+
+    # Opening Hours
+    mon_fri_time = models.CharField(max_length=100, null=True, blank=True)
+    sat_time = models.CharField(max_length=100, null=True, blank=True)
+    sun_time = models.CharField(max_length=100, null=True, blank=True)
+
+    # Social & Direct Messaging (আপডেটেড)
+    whatsapp_number = models.CharField(
+        max_length=20,
+        null=True,
+        blank=True,
+        help_text="WhatsApp number with country code",
+    )
+    telegram_link = models.URLField(
+        max_length=500,
+        null=True,
+        blank=True,
+        help_text="Full telegram link (e.g., https://t.me/username)",
+    )
+
+    # SEO & Meta Tags (নতুন যোগ করা হয়েছে)
+    meta_title = models.CharField(
+        max_length=255, blank=True, null=True, help_text="SEO focus title"
+    )
+    meta_description = models.TextField(
+        blank=True, null=True, help_text="SEO description for search engines"
+    )
+    og_title = models.CharField(
+        max_length=255, blank=True, null=True, help_text="Facebook/Social share title"
+    )
+    og_image = models.ImageField(
+        upload_to="site/seo/",
+        null=True,
+        blank=True,
+        help_text="Social share preview image",
+    )
+    site_url = models.URLField(default="https://elitespagulshan.com", blank=True)
 
     updated_at = models.DateTimeField(auto_now=True)
 
-    class Meta:
-        verbose_name = "Site Config"
-        verbose_name_plural = "Site Config"
-
     def __str__(self):
-        return self.site_name or "Site Config"
+        return self.site_name
 
 
 class HeroSlide(models.Model):
@@ -565,12 +603,6 @@ class BlogPost(models.Model):
 
     def __str__(self):
         return self.title
-
-
-# service page এর জন্য নতুন মডেল
-from django.db import models
-
-# --- Service Page এর জন্য নতুন মডেল (নাম বদলে ServiceItem করা হয়েছে যেন ডুপ্লিকেট না হয়) ---
 
 
 class ServiceCategory(models.Model):

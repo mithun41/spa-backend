@@ -32,8 +32,6 @@ from .models import SiteConfig
 from .models import HomeSection
 
 
-
-
 class VipSpaBaseAdmin(admin.ModelAdmin):
     # গ্রুপের নাম এখানে ভেরিয়েবল হিসেবে রাখলাম যাতে পরে সহজে চেঞ্জ করা যায়
     target_group_name = "VipSpaAdmin"
@@ -59,12 +57,41 @@ class VipSpaBaseAdmin(admin.ModelAdmin):
 
 
 @admin.register(SiteConfig)
-class SiteConfigAdmin(VipSpaBaseAdmin):
-    # list_display মানে এডমিন লিস্টে কোন কোন কলাম দেখা যাবে
-    list_display = ("site_name", "phone_number", "email", "updated_at")
+class SiteConfigAdmin(VipSpaBaseAdmin):  # আপনার আগের বানানো বেস ক্লাস
+    list_display = ("site_name", "phone_number", "whatsapp_number", "updated_at")
 
-    # চাইলে এখানে এডিট করার সুবিধাও দিতে পারেন
-    list_editable = ("phone_number", "email")
+    fieldsets = (
+        (
+            "General & Branding",
+            {"fields": ("site_name", "footer_logo", "footer_description")},
+        ),
+        (
+            "Contact & Communication",
+            {
+                "fields": (
+                    "phone_number",
+                    "call_number",
+                    "email",
+                    "address",
+                    "whatsapp_number",
+                    "telegram_link",
+                )
+            },
+        ),
+        ("Opening Hours", {"fields": ("mon_fri_time", "sat_time", "sun_time")}),
+        (
+            "SEO & Meta Management",
+            {
+                "fields": (
+                    "meta_title",
+                    "meta_description",
+                    "og_title",
+                    "og_image",
+                    "site_url",
+                )
+            },
+        ),
+    )
 
 
 @admin.register(HeroSlide)

@@ -57,10 +57,6 @@ from .serializers import (
     BlogPostSerializer,
 )
 
-# --- ১. সব মডেলের জন্য CRUD ViewSets (অ্যাডমিন প্যানেলের জন্য) ---
-
-# --- ১. সব মডেলের জন্য CRUD ViewSets ---
-
 
 class SiteConfigViewSet(viewsets.ModelViewSet):
     queryset = SiteConfig.objects.all()
@@ -291,11 +287,6 @@ def homepage_view(request):
     return Response(data)
 
 
-from rest_framework import viewsets, permissions, status
-from rest_framework.response import Response
-from .models import SiteConfig
-from .serializers import SiteConfigSerializer
-
 
 class SiteConfigViewSet(viewsets.ModelViewSet):
     queryset = SiteConfig.objects.all()
@@ -357,10 +348,6 @@ class HomeSectionViewSet(viewsets.ModelViewSet):
     queryset = HomeSection.objects.all()
     serializer_class = HomeSectionSerializer
 
-
-from rest_framework import viewsets, permissions
-from .models import ServiceItem
-from .serializers import ServiceItemSerializer
 
 
 class ServiceItemViewSet(viewsets.ModelViewSet):
