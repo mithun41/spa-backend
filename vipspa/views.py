@@ -318,8 +318,6 @@ class SiteConfigViewSet(viewsets.ModelViewSet):
     serializer_class = SiteConfigSerializer
 
     def get_permissions(self):
-        # GET রিকোয়েস্ট (লিঙ্ক/SEO দেখার জন্য) সবাই পারবে
-        # POST/PATCH/DELETE রিকোয়েস্টের জন্য লগইন লাগবে
         if self.action in ["list", "retrieve"]:
             return [permissions.AllowAny()]
         return [permissions.IsAuthenticated()]
