@@ -33,4 +33,5 @@ urlpatterns = [
     path("homepage/", homepage_view, name="homepage"),
     # path('services/', views.services_page_view, name='services-page'),
     path("", include(router.urls)),
+    
 ]
