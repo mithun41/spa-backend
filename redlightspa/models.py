@@ -270,62 +270,70 @@ class BlogPost(models.Model):
         return self.title
 
 
-# service page এর জন্য নতুন মডেল
-from django.db import models
-
-
 class SiteConfig(models.Model):
-    # General Info
+    # --- General & Contact Info (আপনার আগের কোড) ---
     site_name = models.CharField(max_length=100, default="VIP SPA")
     footer_logo = models.ImageField(upload_to="site/logos/", null=True, blank=True)
     footer_description = models.TextField(null=True, blank=True)
+    phone_number = models.CharField(max_length=20, null=True, blank=True)
+    whatsapp_number = models.CharField(max_length=20, null=True, blank=True)
+    site_url = models.URLField(default="https://redlightspagulshan.com", blank=True)
 
-    # Contact Info
-    phone_number = models.CharField(
-        max_length=20, null=True, blank=True
-    )  # মেইন কন্টাক্ট
-    call_number = models.CharField(
-        max_length=20, null=True, blank=True, help_text="Direct call number for buttons"
+    # --- Home Page SEO ---
+    home_meta_title = models.CharField(
+        max_length=255, blank=True, null=True, verbose_name="Home Title"
     )
-    email = models.EmailField(null=True, blank=True)
-    address = models.TextField(null=True, blank=True)
-
-    # Opening Hours
-    mon_fri_time = models.CharField(max_length=100, null=True, blank=True)
-    sat_time = models.CharField(max_length=100, null=True, blank=True)
-    sun_time = models.CharField(max_length=100, null=True, blank=True)
-
-    # Social & Direct Messaging (আপডেটেড)
-    whatsapp_number = models.CharField(
-        max_length=20,
-        null=True,
-        blank=True,
-        help_text="WhatsApp number with country code",
-    )
-    telegram_link = models.URLField(
-        max_length=500,
-        null=True,
-        blank=True,
-        help_text="Full telegram link (e.g., https://t.me/username)",
+    home_meta_description = models.TextField(
+        blank=True, null=True, verbose_name="Home Description"
     )
 
-    # SEO & Meta Tags (নতুন যোগ করা হয়েছে)
-    meta_title = models.CharField(
-        max_length=255, blank=True, null=True, help_text="SEO focus title"
+    # --- About Page SEO ---
+    about_meta_title = models.CharField(
+        max_length=255, blank=True, null=True, verbose_name="About Title"
     )
-    meta_description = models.TextField(
-        blank=True, null=True, help_text="SEO description for search engines"
+    about_meta_description = models.TextField(
+        blank=True, null=True, verbose_name="About Description"
     )
-    og_title = models.CharField(
-        max_length=255, blank=True, null=True, help_text="Facebook/Social share title"
+
+    # --- Services List Page SEO ---
+    services_meta_title = models.CharField(
+        max_length=255, blank=True, null=True, verbose_name="Services Page Title"
     )
+    services_meta_description = models.TextField(
+        blank=True, null=True, verbose_name="Services Page Description"
+    )
+
+    # --- Pricing Page SEO ---
+    pricing_meta_title = models.CharField(
+        max_length=255, blank=True, null=True, verbose_name="Pricing Title"
+    )
+    pricing_meta_description = models.TextField(
+        blank=True, null=True, verbose_name="Pricing Description"
+    )
+
+    # --- Contact Page SEO ---
+    contact_meta_title = models.CharField(
+        max_length=255, blank=True, null=True, verbose_name="Contact Title"
+    )
+    contact_meta_description = models.TextField(
+        blank=True, null=True, verbose_name="Contact Description"
+    )
+
+    # --- Blog Page SEO ---
+    blog_meta_title = models.CharField(
+        max_length=255, blank=True, null=True, verbose_name="Blog Title"
+    )
+    blog_meta_description = models.TextField(
+        blank=True, null=True, verbose_name="Blog Description"
+    )
+
+    # --- Global Social Share (OG Tag) ---
     og_image = models.ImageField(
         upload_to="site/seo/",
         null=True,
         blank=True,
-        help_text="Social share preview image",
+        help_text="Common social share image",
     )
-    site_url = models.URLField(default="https://vipspadhaka.com", blank=True)
 
     updated_at = models.DateTimeField(auto_now=True)
 
