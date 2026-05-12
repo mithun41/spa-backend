@@ -277,6 +277,7 @@ class SiteConfig(models.Model):
     footer_description = models.TextField(null=True, blank=True)
     phone_number = models.CharField(max_length=20, null=True, blank=True)
     whatsapp_number = models.CharField(max_length=20, null=True, blank=True)
+    email = models.EmailField(max_length=255, null=True, blank=True)
     site_url = models.URLField(default="https://elitespagulshan.com", blank=True)
 
     # --- Home Page SEO ---
