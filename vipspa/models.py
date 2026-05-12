@@ -91,6 +91,8 @@ class ServiceSection(models.Model):
 
 class Service(models.Model):
     title = models.CharField(max_length=200)
+    meta_title = models.CharField(max_length=255, blank=True, null=True)
+    meta_description = models.TextField(blank=True, null=True)
     icon = models.ImageField(upload_to="homepage/services/items/", blank=True, null=True)
     background_image = models.ImageField(upload_to="homepage/services/items/", blank=True, null=True)
     details_link = models.CharField(max_length=255, blank=True)

@@ -58,7 +58,7 @@ class ElitespaBaseAdmin(admin.ModelAdmin):
 
 
 @admin.register(SiteConfig)
-class SiteConfigAdmin(ElitespaBaseAdmin):  # আপনার আগের বানানো বেস ক্লাস
+class SiteConfigAdmin(ElitespaBaseAdmin): 
     list_display = ("site_name", "phone_number", "whatsapp_number", "updated_at")
 
     fieldsets = (
