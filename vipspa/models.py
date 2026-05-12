@@ -90,17 +90,30 @@ class ServiceSection(models.Model):
 
 
 class Service(models.Model):
-    title = models.CharField(max_length=200)
+    title = models.CharField(max_length=255)
     meta_title = models.CharField(max_length=255, blank=True, null=True)
     meta_description = models.TextField(blank=True, null=True)
-    icon = models.ImageField(upload_to="homepage/services/items/", blank=True, null=True)
-    background_image = models.ImageField(upload_to="homepage/services/items/", blank=True, null=True)
-    details_link = models.CharField(max_length=255, blank=True)
-    order = models.PositiveIntegerField(default=0)
+    icon = models.ImageField(upload_to="homepage/services/items/")
+    background_image = models.ImageField(upload_to="homepage/services/items/")
+
+    # নতুন ডিটেইলস ফিল্ডসমূহ
+    short_description = models.TextField(
+        blank=True, help_text="সার্ভিস লিস্টে দেখানোর জন্য"
+    )
+    long_description = models.TextField(
+        blank=True, help_text="ডিটেইলস পেইজে দেখানোর জন্য"
+    )
+    service_overview = models.TextField(blank=True)
+
+    # FAQ এর জন্য যদি আলাদা টেবিল না করতে চান, তবে আপাতত টেক্সট হিসেবে রাখা যায়
+    faq_data = models.JSONField(
+        default=list, blank=True, help_text="[{'q': '...', 'a': '...'}] ফরম্যাটে"
+    )
     is_active = models.BooleanField(default=True)
+    order = models.IntegerField(default=0)
 
     class Meta:
-        ordering = ["order"]
+        ordering = ["order", "-id"]
 
     def __str__(self):
         return self.title
