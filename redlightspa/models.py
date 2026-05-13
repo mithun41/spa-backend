@@ -694,10 +694,26 @@ class BlogPage(models.Model):
     tags = models.CharField(max_length=255, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    # --- SEO Meta Fields ---
+    meta_title = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+        help_text="গুগল সার্চ রেজাল্টের জন্য টাইটেল (ফাঁকা রাখলে মেইন টাইটেলটিই ব্যবহৃত হবে)",
+    )
+    meta_description = models.TextField(
+        null=True,
+        blank=True,
+        help_text="ব্লগ পোস্টের একটি ছোট সারসংক্ষেপ যা গুগল সার্চে দেখাবে",
+    )
+
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.title)
         super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.title
 
 
 class BlogComment(models.Model):
