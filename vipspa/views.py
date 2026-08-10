@@ -200,6 +200,8 @@ def homepage_view(request):
     blog_section = BlogSection.objects.first()
 
     hero_slides = HeroSlide.objects.filter(is_active=True).order_by("order")
+    if not hero_slides.exists():
+        hero_slides = HeroSlide.objects.all().order_by("order")
     brand_logos = BrandLogo.objects.filter(is_active=True).order_by("order")
     services = Service.objects.filter(is_active=True).order_by("order")
     marquee_items = MarqueeItem.objects.filter(is_active=True).order_by("order")

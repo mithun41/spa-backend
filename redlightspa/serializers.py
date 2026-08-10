@@ -28,80 +28,51 @@ from .models import (
 class SiteConfigSerializer(serializers.ModelSerializer):
     class Meta:
         model = SiteConfig
-        fields = [
-            "site_name",
-            "logo",
-            "phone_number",
-            "address",
-            "email",
-        ]
+        fields = "__all__"
 
 
 class HeroSlideSerializer(serializers.ModelSerializer):
+    background_image = serializers.ImageField(required=False, allow_null=True)
+    main_image = serializers.ImageField(required=False, allow_null=True)
+    shape_image = serializers.ImageField(required=False, allow_null=True)
+
     class Meta:
         model = HeroSlide
-        fields = [
-            "id",
-            "stroke_text",
-            "subtitle",
-            "title",
-            "description",
-            "background_image",
-            "main_image",
-            "shape_image",
-            "button_text",
-            "button_link",
-            "order",
-        ]
+        fields = "__all__"
 
 
 class BrandLogoSerializer(serializers.ModelSerializer):
+    image = serializers.ImageField(required=False, allow_null=True)
+
     class Meta:
         model = BrandLogo
-        fields = [
-            "id",
-            "image",
-            "link",
-            "order",
-        ]
+        fields = "__all__"
 
 
 class AboutSectionSerializer(serializers.ModelSerializer):
+    main_image = serializers.ImageField(required=False, allow_null=True)
+    side_image = serializers.ImageField(required=False, allow_null=True)
+    feature_1_icon = serializers.ImageField(required=False, allow_null=True)
+    feature_2_icon = serializers.ImageField(required=False, allow_null=True)
+    feature_3_icon = serializers.ImageField(required=False, allow_null=True)
+    video_url = serializers.CharField(required=False, allow_blank=True, allow_null=True)
+
     class Meta:
         model = AboutSection
-        fields = [
-            "subtitle",
-            "title",
-            "description",
-            "main_image",
-            "side_image",
-            "feature_1",
-            "feature_1_icon",
-            "feature_2",
-            "feature_2_icon",
-            "feature_3",
-            "feature_3_icon",
-            "button_text",
-            "button_link",
-            "contact_label",
-            "contact_value",
-            "video_url",
-        ]
+        fields = "__all__"
 
 
 class ServiceSectionSerializer(serializers.ModelSerializer):
+    icon_image = serializers.ImageField(required=False, allow_null=True)
+
     class Meta:
         model = ServiceSection
-        fields = [
-            "id",
-            "subtitle",
-            "title",
-            "description",
-            "icon_image",
-        ]
+        fields = "__all__"
 
 
 class ServiceSerializer(serializers.ModelSerializer):
+    icon = serializers.ImageField(required=False, allow_null=True)
+    background_image = serializers.ImageField(required=False, allow_null=True)
 
     class Meta:
         model = Service
@@ -111,57 +82,36 @@ class ServiceSerializer(serializers.ModelSerializer):
 class MarqueeItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = MarqueeItem
-        fields = [
-            "id",
-            "text",
-            "order",
-        ]
+        fields = "__all__"
 
 
 class VideoSectionSerializer(serializers.ModelSerializer):
+    background_image = serializers.ImageField(required=False, allow_null=True)
+    video_url = serializers.CharField(required=False, allow_blank=True, allow_null=True)
+
     class Meta:
         model = VideoSection
-        fields = [
-            "title",
-            "button_text",
-            "button_link",
-            "video_url",
-            "background_image",
-        ]
+        fields = "__all__"
 
 
 class GalleryItemSerializer(serializers.ModelSerializer):
+    image = serializers.ImageField(required=False, allow_null=True)
+
     class Meta:
         model = GalleryItem
-        fields = [
-            "id",
-            "image",
-            "view_link",
-            "order",
-        ]
+        fields = "__all__"
 
 
 class PricingSectionSerializer(serializers.ModelSerializer):
     class Meta:
         model = PricingSection
-        fields = [
-            "subtitle",
-            "title",
-        ]
+        fields = "__all__"
 
 
 class PricingPlanSerializer(serializers.ModelSerializer):
     class Meta:
         model = PricingPlan
-        fields = [
-            "id",
-            "title",
-            "session_1",
-            "session_2",
-            "session_3",
-            "price",
-            "order",
-        ]
+        fields = "__all__"
 
 
 class TestimonialSerializer(serializers.ModelSerializer):
@@ -173,58 +123,39 @@ class TestimonialSerializer(serializers.ModelSerializer):
 
 
 class TeamMemberSerializer(serializers.ModelSerializer):
+    photo = serializers.ImageField(required=False, allow_null=True)
+
     class Meta:
         model = TeamMember
-        fields = [
-            "id",
-            "name",
-            "designation",
-            "photo",
-            "details_link",
-            "order",
-        ]
+        fields = "__all__"
 
 
 class InstagramSectionSerializer(serializers.ModelSerializer):
     class Meta:
         model = InstagramSection
-        fields = [
-            "title",
-        ]
+        fields = "__all__"
 
 
 class InstagramImageSerializer(serializers.ModelSerializer):
+    image = serializers.ImageField(required=False, allow_null=True)
+
     class Meta:
         model = InstagramImage
-        fields = [
-            "id",
-            "image",
-            "link",
-            "order",
-        ]
+        fields = "__all__"
 
 
 class BlogSectionSerializer(serializers.ModelSerializer):
     class Meta:
         model = BlogSection
-        fields = [
-            "subtitle",
-            "title",
-        ]
+        fields = "__all__"
 
 
 class BlogPostSerializer(serializers.ModelSerializer):
+    image = serializers.ImageField(required=False, allow_null=True)
+
     class Meta:
         model = BlogPost
-        fields = [
-            "id",
-            "category",
-            "date",
-            "title",
-            "image",
-            "details_link",
-            "order",
-        ]
+        fields = "__all__"
 
 
 # Sevice Section এর জন্য Serializer
@@ -242,6 +173,9 @@ class ServiceCategorySerializer(serializers.ModelSerializer):
 # ২. সার্ভিস আইটেম সিরিয়ালাইজার (সার্ভিস পেজের জন্য)
 class ServiceItemSerializer(serializers.ModelSerializer):
     category_name = serializers.ReadOnlyField(source="category.name")
+    category = serializers.PrimaryKeyRelatedField(
+        queryset=ServiceCategory.objects.all(), required=False, allow_null=True
+    )
 
     class Meta:
         model = ServiceItem
@@ -260,6 +194,25 @@ class ServiceItemSerializer(serializers.ModelSerializer):
             "is_active",
             "order",
         ]
+
+    def to_internal_value(self, data):
+        if not ServiceCategory.objects.exists():
+            ServiceCategory.objects.create(name="General Services", order=1)
+
+        cat_id = data.get("category")
+        if not cat_id or not ServiceCategory.objects.filter(id=cat_id).exists():
+            default_cat = ServiceCategory.objects.first()
+            if default_cat:
+                if hasattr(data, "_mutable") and not data._mutable:
+                    data = data.copy()
+                else:
+                    try:
+                        data = data.copy()
+                    except Exception:
+                        pass
+                data["category"] = default_cat.id
+
+        return super().to_internal_value(data)
 
 
 
@@ -315,6 +268,8 @@ from .models import HomeSection
 
 
 class HomeSectionSerializer(serializers.ModelSerializer):
+    button_url = serializers.CharField(required=False, allow_blank=True, default="")
+
     class Meta:
         model = HomeSection
         fields = "__all__"

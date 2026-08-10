@@ -61,103 +61,103 @@ from .serializers import (
 class SiteConfigViewSet(viewsets.ModelViewSet):
     queryset = SiteConfig.objects.all()
     serializer_class = SiteConfigSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.AllowAny]
 
 
 class HeroSlideViewSet(viewsets.ModelViewSet):
     queryset = HeroSlide.objects.all().order_by("order")
     serializer_class = HeroSlideSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.AllowAny]
 
 
 class BrandLogoViewSet(viewsets.ModelViewSet):
     queryset = BrandLogo.objects.all().order_by("order")
     serializer_class = BrandLogoSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.AllowAny]
 
 
 class AboutSectionViewSet(viewsets.ModelViewSet):
     queryset = AboutSection.objects.all()
     serializer_class = AboutSectionSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.AllowAny]
 
 
-class ServiceSectionViewSet(viewsets.ModelViewSet):  # এইটা আপনার মিসিং ছিল
+class ServiceSectionViewSet(viewsets.ModelViewSet):
     queryset = ServiceSection.objects.all()
     serializer_class = ServiceSectionSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.AllowAny]
 
 
 class ServiceViewSet(viewsets.ModelViewSet):
     queryset = Service.objects.all().order_by("order")
     serializer_class = ServiceSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.AllowAny]
 
 
 class MarqueeItemViewSet(viewsets.ModelViewSet):
     queryset = MarqueeItem.objects.all().order_by("order")
     serializer_class = MarqueeItemSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.AllowAny]
 
 
 class VideoSectionViewSet(viewsets.ModelViewSet):
     queryset = VideoSection.objects.all()
     serializer_class = VideoSectionSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.AllowAny]
 
 
 class GalleryItemViewSet(viewsets.ModelViewSet):
     queryset = GalleryItem.objects.all().order_by("order")
     serializer_class = GalleryItemSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.AllowAny]
 
 
 class PricingSectionViewSet(viewsets.ModelViewSet):
     queryset = PricingSection.objects.all()
     serializer_class = PricingSectionSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.AllowAny]
 
 
 class PricingPlanViewSet(viewsets.ModelViewSet):
     queryset = PricingPlan.objects.all().order_by("order")
     serializer_class = PricingPlanSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.AllowAny]
 
 
 class TestimonialViewSet(viewsets.ModelViewSet):
     queryset = Testimonial.objects.all().order_by("order")
     serializer_class = TestimonialSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.AllowAny]
 
 
 class TeamMemberViewSet(viewsets.ModelViewSet):
     queryset = TeamMember.objects.all().order_by("order")
     serializer_class = TeamMemberSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.AllowAny]
 
 
 class InstagramSectionViewSet(viewsets.ModelViewSet):
     queryset = InstagramSection.objects.all()
     serializer_class = InstagramSectionSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.AllowAny]
 
 
 class InstagramImageViewSet(viewsets.ModelViewSet):
     queryset = InstagramImage.objects.all().order_by("order")
     serializer_class = InstagramImageSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.AllowAny]
 
 
 class BlogSectionViewSet(viewsets.ModelViewSet):
     queryset = BlogSection.objects.all()
     serializer_class = BlogSectionSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.AllowAny]
 
 
 class BlogPostViewSet(viewsets.ModelViewSet):
     queryset = BlogPost.objects.all().order_by("-id")
     serializer_class = BlogPostSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.AllowAny]
 
 
 # --- ২. আপনার মেইন GET API (ফ্রন্টএন্ড হোমপেজের জন্য) ---
@@ -174,6 +174,8 @@ def homepage_view(request):
     blog_section = BlogSection.objects.first()
 
     hero_slides = HeroSlide.objects.filter(is_active=True).order_by("order")
+    if not hero_slides.exists():
+        hero_slides = HeroSlide.objects.all().order_by("order")
     brand_logos = BrandLogo.objects.filter(is_active=True).order_by("order")
     services = Service.objects.filter(is_active=True).order_by("order")
     marquee_items = MarqueeItem.objects.filter(is_active=True).order_by("order")
